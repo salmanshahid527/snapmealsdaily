@@ -15,7 +15,7 @@ export function FeaturedPosts({ posts }: FeaturedPostsProps) {
   if (!posts.length) return null;
 
   return (
-    <section className="section-gap bg-white">
+    <section className="section-gap bg-background">
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={fadeUpVariant}
@@ -25,16 +25,16 @@ export function FeaturedPosts({ posts }: FeaturedPostsProps) {
           className="flex items-end justify-between mb-10"
         >
           <div>
-            <p className="overline text-primary mb-2">Editor&apos;s Pick</p>
+            <p className="overline text-primary mb-2">Editor&apos;s pick</p>
             <h2 className="font-display text-3xl sm:text-4xl font-semibold text-foreground">
-              Trending Recipes This Week
+              Recipes worth saving
             </h2>
           </div>
           <Link
             href="/blog"
             className="hidden sm:flex items-center gap-1.5 text-sm font-medium text-foreground-muted hover:text-primary transition-colors"
           >
-            See all recipes <ArrowRight size={14} />
+            See all posts <ArrowRight size={14} />
           </Link>
         </motion.div>
 
@@ -43,9 +43,9 @@ export function FeaturedPosts({ posts }: FeaturedPostsProps) {
         <div className="mt-8 text-center sm:hidden">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-orange-200 text-sm font-medium text-foreground hover:border-primary hover:text-primary transition-colors"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border text-sm font-medium text-foreground hover:border-primary hover:text-primary transition-colors"
           >
-            See all recipes <ArrowRight size={14} />
+            See all posts <ArrowRight size={14} />
           </Link>
         </div>
       </div>

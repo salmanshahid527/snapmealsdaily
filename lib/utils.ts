@@ -54,9 +54,9 @@ export function formatDateTimeShort(dateString?: string): string {
  * Assumes ~200 words per minute
  */
 export function readTime(content?: string): string {
-  if (!content) return "1 min read";
-  const wordCount = content.split(/\s+/).length;
-  const minutes = Math.ceil(wordCount / 200);
+  if (!content) return "3 min read";
+  const words = content.replace(/<[^>]*>/g, "").trim().split(/\s+/).length;
+  const minutes = Math.max(1, Math.round(words / 200));
   return `${minutes} min read`;
 }
 

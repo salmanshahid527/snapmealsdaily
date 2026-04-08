@@ -1,63 +1,129 @@
 import type { Metadata } from "next";
-import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, DEFAULT_OG_IMAGE } from "@/lib/constants";
+import Script from "next/script";
+import { Poppins } from "next/font/google";
+import "./globals.css";
 import { Providers } from "@/components/providers/Providers";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Footer } from "@/components/layout/Footer";
+import { OrganizationWebSiteJsonLd } from "@/components/seo/JsonLd";
 import { getNavLinks } from "@/lib/wp/nav";
 import { getCategories } from "@/lib/wp/categories";
-import "./globals.css";
+import {
+  SITE_NAME,
+  SITE_DESCRIPTION,
+  SITE_URL,
+  DEFAULT_OG_IMAGE,
+} from "@/lib/constants";
+
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: `${SITE_NAME} | Delicious Recipes & Food Inspiration`,
-  description: SITE_DESCRIPTION,
   metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_NAME} — Recipes & Food Inspiration`,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  keywords: [
+    "recipes",
+    "cooking",
+    "meal ideas",
+    "easy dinners",
+    "breakfast",
+    "food blog",
+    "Pinterest recipes",
+  ],
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  alternates: { canonical: SITE_URL },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: SITE_URL,
     siteName: SITE_NAME,
-    title: SITE_NAME,
+    url: SITE_URL,
+    title: `${SITE_NAME} — Recipes & Food Inspiration`,
     description: SITE_DESCRIPTION,
     images: [
       {
         url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: SITE_NAME,
+        alt: `${SITE_NAME} — Recipes`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE_NAME,
+    title: `${SITE_NAME} — Recipes & Food Inspiration`,
     description: SITE_DESCRIPTION,
-    images: [DEFAULT_OG_IMAGE],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },
 };
 
 export default async function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [navLinks, categories] = await Promise.all([
+}: Readonly<{ children: React.ReactNode }>) {
+  const [initialNavLinks, initialCategories] = await Promise.all([
     getNavLinks(),
     getCategories(),
   ]);
 
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "";
+  const wpUrl = process.env.NEXT_PUBLIC_API_URL ?? "";
+  let wpOrigin: string | null = null;
+  try {
+    if (wpUrl.startsWith("http")) wpOrigin = new URL(wpUrl).origin;
+  } catch {
+    // ignore
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://api.snapmealsdaily.com" />
-        <link rel="preconnect" href="https://secure.gravatar.com" />
-        <link rel="preconnect" href="https://images.unsplash.com" />
-        <meta name="theme-color" content="#FF8C42" />
+        <meta name="theme-color" content="#b91c2e" />
+        {wpOrigin && (
+          <link rel="preconnect" href={wpOrigin} crossOrigin="anonymous" />
+        )}
       </head>
-      <body>
+      <body
+        className={`${poppins.variable} antialiased min-h-screen flex flex-col`}
+      >
+        {gaId && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+              strategy="lazyOnload"
+            />
+            <Script id="google-analytics" strategy="lazyOnload">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gaId}');`}
+            </Script>
+          </>
+        )}
+        <OrganizationWebSiteJsonLd />
         <Providers>
-          <SiteHeader initialNavLinks={navLinks} initialCategories={categories} />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
+          <SiteHeader
+            initialNavLinks={initialNavLinks}
+            initialCategories={initialCategories}
+          />
+          <main className="flex-1 w-full overflow-x-hidden">{children}</main>
+          <Footer initialCategories={initialCategories} />
         </Providers>
       </body>
     </html>

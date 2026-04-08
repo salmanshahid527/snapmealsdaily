@@ -155,7 +155,7 @@ export default async function SlugPage({ params }: Props) {
         <Container>
           <article className="max-w-[920px] mx-auto">
             {/* Share buttons */}
-            <ShareButtons title={post.title} url={`${SITE_URL}/${post.slug}`} />
+            <ShareButtons title={post.title} slug={post.slug} />
 
             {/* Article body */}
             {post.body && <ArticleBody html={post.body} />}
@@ -168,7 +168,7 @@ export default async function SlugPage({ params }: Props) {
 
       {/* Related posts */}
       {relatedPosts.length > 0 && (
-        <div className="section-gap bg-orange-50">
+        <div className="section-gap bg-background-alt">
           <Container>
             <RelatedPosts posts={relatedPosts} />
           </Container>

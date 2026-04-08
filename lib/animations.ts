@@ -4,29 +4,18 @@ import { Variants } from "framer-motion";
  * Fade in + slide up animation
  */
 export const fadeUpVariant: Variants = {
-  hidden: {
-    opacity: 0,
-    y: 20,
-  },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-    },
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
-/**
- * Container for staggering children
- */
 export const staggerContainer: Variants = {
+  hidden: {},
   visible: {
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.05,
-    },
+    transition: { staggerChildren: 0.1, delayChildren: 0.05 },
   },
 };
 

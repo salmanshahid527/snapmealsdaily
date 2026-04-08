@@ -37,14 +37,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  rewrites: async () => ({
-    beforeFiles: [
-      {
-        source: "/wp-content/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/wp-content/:path*`,
-      },
-    ],
-  }),
+  rewrites: async () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
+    const beforeFiles =
+      apiUrl &&
+      (apiUrl.startsWith("http://") || apiUrl.startsWith("https://"))
+        ? [
+            {
+              source: "/wp-content/:path*",
+              destination: `${apiUrl}/wp-content/:path*`,
+            },
+          ]
+        : [];
+    return { beforeFiles };
+  },
 };
 
 export default nextConfig;

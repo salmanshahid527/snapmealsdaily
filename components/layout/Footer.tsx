@@ -1,157 +1,155 @@
 "use client";
 
 import Link from "next/link";
-import { SOCIAL, SITE_NAME } from "@/lib/constants";
-import { Container } from "./Container";
+import { SITE_NAME, SOCIAL } from "@/lib/constants";
+import type { Category } from "@/types";
+import { Instagram, Facebook, ExternalLink } from "lucide-react";
 
-export function Footer() {
+interface FooterProps {
+  initialCategories?: Category[];
+}
+
+export function Footer({ initialCategories }: FooterProps) {
+  const categories = initialCategories ?? [];
+
   return (
-    <footer
-      className="border-t"
-      style={{
-        borderColor: "var(--border)",
-        backgroundColor: "var(--background-alt)",
-      }}
-    >
-      <Container className="py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div
-                className="h-8 w-8 rounded-lg flex items-center justify-center text-white font-bold text-sm"
-                style={{ backgroundColor: "var(--primary)" }}
-              >
-                S
-              </div>
-              <h3 className="text-lg font-bold" style={{ color: "var(--foreground)" }}>
-                {SITE_NAME}
-              </h3>
-            </div>
-            <p className="text-sm" style={{ color: "var(--foreground-muted)" }}>
-              Delicious recipes, food inspiration, and Pinterest-friendly photos.
+    <footer className="bg-foreground text-card pt-12 pb-6 mt-auto">
+      <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+          <div className="lg:col-span-1">
+            <Link href="/" className="inline-block mb-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo.svg"
+                alt={SITE_NAME}
+                className="h-9 w-auto brightness-0 invert"
+              />
+            </Link>
+            <p className="text-sm text-card/70 leading-relaxed mb-4">
+              Fresh recipes, smart meal ideas, and kitchen inspiration — save,
+              cook, and share.
             </p>
+            <div className="flex gap-3">
+              {SOCIAL.instagram && (
+                <a
+                  href={SOCIAL.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-white/10 hover:bg-primary/80 transition-colors"
+                  aria-label="Instagram"
+                >
+                  <Instagram size={16} />
+                </a>
+              )}
+              {SOCIAL.facebook && (
+                <a
+                  href={SOCIAL.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-white/10 hover:bg-primary/80 transition-colors"
+                  aria-label="Facebook"
+                >
+                  <Facebook size={16} />
+                </a>
+              )}
+              {SOCIAL.pinterest && (
+                <a
+                  href={SOCIAL.pinterest}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-white/10 hover:bg-primary/80 transition-colors"
+                  aria-label="Pinterest"
+                >
+                  <ExternalLink size={16} />
+                </a>
+              )}
+            </div>
           </div>
 
-          {/* Links */}
+          {categories.length > 0 && (
+            <div>
+              <h3 className="overline text-card/60 mb-4">Categories</h3>
+              <ul className="space-y-2">
+                {categories.slice(0, 6).map((cat) => (
+                  <li key={cat._id}>
+                    <Link
+                      href={`/category/${cat.slug}`}
+                      className="text-sm text-card/80 hover:text-primary transition-colors"
+                    >
+                      {cat.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <div>
-            <h4 className="font-semibold mb-4" style={{ color: "var(--foreground)" }}>
-              Quick Links
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/blog"
-                  className="transition-colors"
-                  style={{ color: "var(--foreground-muted)" }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "var(--primary)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "var(--foreground-muted)";
-                  }}
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="transition-colors"
-                  style={{ color: "var(--foreground-muted)" }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "var(--primary)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "var(--foreground-muted)";
-                  }}
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="transition-colors"
-                  style={{ color: "var(--foreground-muted)" }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "var(--primary)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "var(--foreground-muted)";
-                  }}
-                >
-                  Contact
-                </Link>
-              </li>
+            <h3 className="overline text-card/60 mb-4">Explore</h3>
+            <ul className="space-y-2">
+              {[
+                { label: "Home", href: "/" },
+                { label: "Blog", href: "/blog" },
+                { label: "About", href: "/about" },
+                { label: "Contact", href: "/contact" },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-card/80 hover:text-primary transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Social */}
           <div>
-            <h4 className="font-semibold mb-4" style={{ color: "var(--foreground)" }}>
-              Follow Us
-            </h4>
-            <div className="flex gap-4">
-              <a
-                href={SOCIAL.pinterest}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors"
-                style={{ color: "var(--foreground-muted)" }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "var(--primary)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "var(--foreground-muted)";
-                }}
+            <h3 className="overline text-card/60 mb-4">Newsletter</h3>
+            <p className="text-sm text-card/70 mb-3 leading-relaxed">
+              New recipes each week. No spam — just flavor.
+            </p>
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="flex flex-col gap-2"
+            >
+              <input
+                type="email"
+                placeholder="your@email.com"
+                className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-sm text-card placeholder:text-card/40 focus:outline-none focus:border-primary transition-colors"
+              />
+              <button
+                type="submit"
+                className="w-full py-2 rounded-lg bg-primary hover:bg-accent-foreground text-white text-sm font-medium transition-colors"
               >
-                Pinterest
-              </a>
-              <a
-                href={SOCIAL.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors"
-                style={{ color: "var(--foreground-muted)" }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "var(--primary)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "var(--foreground-muted)";
-                }}
-              >
-                Instagram
-              </a>
-              <a
-                href={SOCIAL.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors"
-                style={{ color: "var(--foreground-muted)" }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "var(--primary)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "var(--foreground-muted)";
-                }}
-              >
-                Facebook
-              </a>
-            </div>
+                Subscribe
+              </button>
+            </form>
           </div>
         </div>
 
-        <div
-          className="border-t mt-8 pt-8 text-center text-sm"
-          style={{
-            borderColor: "var(--border)",
-            color: "var(--foreground-muted)",
-          }}
-        >
-          <p>&copy; 2024 {SITE_NAME}. All rights reserved.</p>
+        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-card/50">
+            © {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
+          </p>
+          <div className="flex gap-4">
+            {[
+              { label: "Privacy Policy", href: "/privacy" },
+              { label: "Disclaimer", href: "/disclaimer" },
+              { label: "Contact", href: "/contact" },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-xs text-card/50 hover:text-primary transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </div>
-      </Container>
+      </div>
     </footer>
   );
 }

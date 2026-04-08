@@ -108,3 +108,28 @@ export function useFeaturedPosts(initialData?: Post[]): UseQueryResult<Post[]> {
     refetchOnReconnect: false,
   });
 }
+
+export function usePostsByCategory(
+  categoryId: number | null,
+  initialData?: Post[]
+) {
+  const fromServer = initialData !== undefined && !!categoryId;
+  return useQuery({
+    queryKey: ["posts", "category", categoryId],
+    queryFn: async () => {
+      const posts = await fetchWpClient<WpPost[]>("/posts", {
+        categories: categoryId!,
+        per_page: 50,
+        _embed: true,
+        orderby: "date",
+        order: "desc",
+        status: "publish",
+      });
+      return posts?.map(mapWpPostToPost) || [];
+    },
+    enabled: !!categoryId && !fromServer,
+    initialData: fromServer ? initialData : undefined,
+    initialDataUpdatedAt: fromServer ? Date.now() : undefined,
+    staleTime: fromServer ? Infinity : 0,
+  });
+}

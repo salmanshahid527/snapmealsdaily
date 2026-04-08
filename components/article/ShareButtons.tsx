@@ -1,54 +1,56 @@
 "use client";
 
-import { FaPinterest, FaTwitter, FaFacebook } from "react-icons/fa";
+import { useState } from "react";
+import { Link2, Check, Twitter, Facebook } from "lucide-react";
+import { SITE_URL } from "@/lib/constants";
 
 interface ShareButtonsProps {
   title: string;
-  url: string;
+  slug: string;
 }
 
-export function ShareButtons({ title, url }: ShareButtonsProps) {
-  const encodedTitle = encodeURIComponent(title);
-  const encodedUrl = encodeURIComponent(url);
+export function ShareButtons({ title, slug }: ShareButtonsProps) {
+  const [copied, setCopied] = useState(false);
+  const url = `${SITE_URL}/${slug}`;
 
-  const shareLinks = [
-    {
-      name: "Pinterest",
-      icon: FaPinterest,
-      href: `https://pinterest.com/pin/create/button/?url=${encodedUrl}&description=${encodedTitle}`,
-      color: "text-[#E60023]",
-    },
-    {
-      name: "Twitter",
-      icon: FaTwitter,
-      href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
-      color: "text-[#1DA1F2]",
-    },
-    {
-      name: "Facebook",
-      icon: FaFacebook,
-      href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-      color: "text-[#1877F2]",
-    },
-  ];
+  const copyLink = async () => {
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
-    <div className="my-8 p-6 bg-orange-50 rounded-lg border border-orange-100">
-      <p className="text-sm font-semibold text-foreground mb-4">Share this recipe:</p>
-      <div className="flex gap-4">
-        {shareLinks.map(({ name, icon: Icon, href, color }) => (
-          <a
-            key={name}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`p-3 rounded-full bg-white border border-orange-200 ${color} hover:bg-orange-100 transition-colors`}
-            title={`Share on ${name}`}
-          >
-            <Icon size={20} />
-          </a>
-        ))}
-      </div>
+    <div className="flex items-center gap-2 mt-6">
+      <span className="text-xs text-foreground-subtle mr-1">Share:</span>
+
+      <button
+        onClick={copyLink}
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs text-foreground-muted hover:border-primary hover:text-primary transition-colors"
+        aria-label="Copy link"
+      >
+        {copied ? <Check size={12} /> : <Link2 size={12} />}
+        {copied ? "Copied!" : "Copy link"}
+      </button>
+
+      <a
+        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="p-2 rounded-full border border-border text-foreground-muted hover:border-primary hover:text-primary transition-colors"
+        aria-label="Share on Twitter"
+      >
+        <Twitter size={13} />
+      </a>
+
+      <a
+        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="p-2 rounded-full border border-border text-foreground-muted hover:border-primary hover:text-primary transition-colors"
+        aria-label="Share on Facebook"
+      >
+        <Facebook size={13} />
+      </a>
     </div>
   );
 }

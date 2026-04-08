@@ -33,7 +33,7 @@ export function SearchView() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search for recipes, ingredients, dishes..."
             autoFocus
-            className="w-full pl-13 pr-12 py-4 rounded-2xl border border-orange-200 bg-white text-foreground placeholder:text-foreground-subtle text-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-orange-200 transition-all"
+            className="w-full pl-13 pr-12 py-4 rounded-2xl border border-border bg-background text-foreground placeholder:text-foreground-subtle text-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
           />
           {query && (
             <button
@@ -51,11 +51,11 @@ export function SearchView() {
       {isSearching && hasQuery && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="rounded-lg overflow-hidden bg-orange-50 animate-pulse border border-orange-100">
-              <div className="aspect-[16/10] bg-orange-200" />
+            <div key={i} className="rounded-xl overflow-hidden bg-muted animate-pulse">
+              <div className="aspect-[16/10] bg-muted-foreground/10" />
               <div className="p-5 space-y-3">
-                <div className="h-4 bg-orange-200 rounded w-1/3" />
-                <div className="h-5 bg-orange-200 rounded w-3/4" />
+                <div className="h-4 bg-muted-foreground/10 rounded w-1/3" />
+                <div className="h-5 bg-muted-foreground/10 rounded w-3/4" />
               </div>
             </div>
           ))}
@@ -84,7 +84,7 @@ export function SearchView() {
               <button
                 key={s}
                 onClick={() => setQuery(s)}
-                className="px-4 py-1.5 rounded-full border border-orange-200 text-sm text-foreground-muted hover:border-primary hover:text-primary transition-colors"
+                className="px-4 py-1.5 rounded-full border border-border text-sm text-foreground-muted hover:border-primary hover:text-primary transition-colors"
               >
                 {s}
               </button>

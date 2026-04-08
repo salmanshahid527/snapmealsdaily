@@ -8,12 +8,19 @@ export interface WpPost {
   modified?: string;
   slug: string;
   status: string;
-  title: { rendered: string };
+  title: string | { rendered: string };
   content: { rendered: string };
-  excerpt: { rendered: string };
+  excerpt: string | { rendered: string };
   featured_media: number;
   categories: number[];
   sticky?: boolean;
+  /** Present on mock / flattened API shapes */
+  featuredImage?: string;
+  featuredImageAlt?: string;
+  featured?: boolean;
+  publishedAt?: string;
+  modifiedAt?: string;
+  author?: { name: string; image?: string };
   _embedded?: {
     "wp:featuredmedia"?: Array<{
       source_url: string;

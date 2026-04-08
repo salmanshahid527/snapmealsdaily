@@ -9,8 +9,8 @@ interface AuthorCardProps {
 
 export function AuthorCard({ author }: AuthorCardProps) {
   return (
-    <div className="mt-12 pt-8 border-t border-orange-100">
-      <div className="bg-orange-50 rounded-lg p-6 sm:p-8">
+    <div className="mt-12 pt-8 border-t border-border">
+      <div className="bg-primary-muted/40 rounded-lg p-6 sm:p-8 border border-border">
         <div className="flex gap-6 items-start">
           {author.image && (
             <div className="flex-shrink-0">
@@ -42,7 +42,7 @@ export function AuthorCard({ author }: AuthorCardProps) {
                   href={author.pinterest}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white text-primary text-sm font-medium hover:bg-orange-100 transition-colors border border-orange-200"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card text-primary text-sm font-medium hover:bg-primary-muted transition-colors border border-border"
                 >
                   Pinterest
                 </a>
@@ -52,7 +52,7 @@ export function AuthorCard({ author }: AuthorCardProps) {
                   href={author.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white text-primary text-sm font-medium hover:bg-orange-100 transition-colors border border-orange-200"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card text-primary text-sm font-medium hover:bg-primary-muted transition-colors border border-border"
                 >
                   Instagram
                 </a>
@@ -62,7 +62,7 @@ export function AuthorCard({ author }: AuthorCardProps) {
                   href={author.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white text-primary text-sm font-medium hover:bg-orange-100 transition-colors border border-orange-200"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card text-primary text-sm font-medium hover:bg-primary-muted transition-colors border border-border"
                 >
                   Facebook
                 </a>

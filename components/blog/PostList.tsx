@@ -36,8 +36,8 @@ export function PostList({ initialPosts, initialCategories }: PostListProps) {
             className={cn(
               "px-4 py-1.5 rounded-full text-sm font-medium transition-colors border",
               !activeCategorySlug
-                ? "bg-primary text-white border-primary"
-                : "border-orange-200 text-foreground-muted hover:border-primary hover:text-primary"
+                ? "bg-primary text-primary-foreground border-primary"
+                : "border-border text-foreground-muted hover:border-primary hover:text-primary"
             )}
           >
             All Recipes
@@ -53,8 +53,8 @@ export function PostList({ initialPosts, initialCategories }: PostListProps) {
               className={cn(
                 "px-4 py-1.5 rounded-full text-sm font-medium transition-colors border",
                 activeCategorySlug === cat.slug
-                  ? "bg-primary text-white border-primary"
-                  : "border-orange-200 text-foreground-muted hover:border-primary hover:text-primary"
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "border-border text-foreground-muted hover:border-primary hover:text-primary"
               )}
             >
               {cat.title}
@@ -63,13 +63,13 @@ export function PostList({ initialPosts, initialCategories }: PostListProps) {
         </div>
 
         {/* View mode toggle */}
-        <div className="flex gap-1 bg-orange-50 p-1 rounded-lg border border-orange-200">
+        <div className="flex gap-1 bg-muted p-1 rounded-lg border border-border">
           <button
             onClick={() => setViewMode("grid")}
             className={cn(
               "p-2 rounded-lg transition-colors",
               viewMode === "grid"
-                ? "bg-primary text-white"
+                ? "bg-primary text-primary-foreground"
                 : "text-foreground-muted hover:text-foreground"
             )}
             aria-label="Grid view"
@@ -82,7 +82,7 @@ export function PostList({ initialPosts, initialCategories }: PostListProps) {
             className={cn(
               "p-2 rounded-lg transition-colors",
               viewMode === "masonry"
-                ? "bg-primary text-white"
+                ? "bg-primary text-primary-foreground"
                 : "text-foreground-muted hover:text-foreground"
             )}
             aria-label="Masonry view"

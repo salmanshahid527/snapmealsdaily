@@ -11,7 +11,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
   if (!posts.length) return null;
 
   return (
-    <section className="mt-16 pt-12 border-t border-orange-100">
+    <section className="mt-16 pt-12 border-t border-border">
       <div className="mb-8">
         <h3 className="text-2xl font-bold text-foreground mb-2 font-display">
           More Recipes Like This

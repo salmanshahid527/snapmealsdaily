@@ -1,8 +1,10 @@
 "use client";
 
+import { useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Clock, ChevronRight, User } from "lucide-react";
-import { FaPinterest } from "react-icons/fa";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Calendar, Clock, ChevronRight } from "lucide-react";
 import { formatDateTimeShort, readTime } from "@/lib/utils";
 import type { PostDetail } from "@/types";
 
@@ -11,56 +13,37 @@ interface ArticleHeroProps {
 }
 
 export function ArticleHero({ post }: ArticleHeroProps) {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+
   return (
-    <section
-      className="relative py-16 sm:py-20 lg:py-24 overflow-hidden group"
-      style={{
-        backgroundImage: post.featuredImage
-          ? `url('${post.featuredImage}')`
-          : "linear-gradient(135deg, var(--color-primary-muted), var(--color-background))",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-black/30" />
+    <section ref={ref} className="relative overflow-hidden">
+      <div className="relative h-[50vh] sm:h-[60vh] overflow-hidden">
+        <motion.div style={{ y: imgY }} className="absolute inset-0 scale-110">
+          {post.featuredImage ? (
+            <Image
+              src={post.featuredImage}
+              alt={post.featuredImageAlt ?? post.title}
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-muted to-muted" />
+          )}
+        </motion.div>
 
-      {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+      </div>
 
-      {/* Pinterest Button */}
-      <a
-        href="https://pinterest.com/snapmealsdaily"
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={(e) => e.stopPropagation()}
-        aria-label="Share on Pinterest"
-        className={`
-          absolute top-4 left-4 sm:top-6 sm:left-6 md:top-8 md:left-8
-          z-20
-          w-12 h-12 md:w-14 md:h-14
-          bg-[#E60023] hover:bg-[#C41E14]
-          rounded-full
-          flex items-center justify-center
-          shadow-lg hover:shadow-2xl
-          transition-all duration-300 ease-out
-          opacity-0 sm:group-hover:opacity-100
-          md:group-hover:opacity-100
-          lg:opacity-100
-          pointer-events-auto
-          active:scale-95
-          ring-2 ring-white/20 hover:ring-white/40
-        `}
-      >
-        <FaPinterest className="w-6 h-6 text-white" />
-      </a>
-
-      {/* Article meta — positioned over background */}
-      <div className="relative mx-auto max-w-[920px] px-4 sm:px-6">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-xs text-white/80 mb-5">
-          <Link href="/" className="hover:text-white transition-colors">
+      <div className="relative -mt-16 mx-auto max-w-[920px] px-4 sm:px-6">
+        <nav className="flex items-center gap-1.5 text-xs text-foreground-subtle mb-5">
+          <Link href="/" className="hover:text-primary transition-colors">
             Home
           </Link>
           <ChevronRight size={12} />
@@ -68,15 +51,14 @@ export function ArticleHero({ post }: ArticleHeroProps) {
             <>
               <Link
                 href={`/category/${post.category.slug}`}
-                prefetch={false}
-                className="hover:text-white transition-colors"
+                className="hover:text-primary transition-colors"
               >
                 {post.category.title}
               </Link>
               <ChevronRight size={12} />
             </>
           )}
-          <span className="text-white/60 truncate max-w-[200px]">
+          <span className="text-foreground-muted truncate max-w-[200px]">
             {post.title}
           </span>
         </nav>
@@ -84,38 +66,36 @@ export function ArticleHero({ post }: ArticleHeroProps) {
         {post.category && (
           <Link
             href={`/category/${post.category.slug}`}
-            prefetch={false}
-            className="inline-block mb-4 px-3 py-1 rounded-full bg-primary text-white text-xs font-semibold hover:bg-orange-700 transition-colors"
+            className="inline-block mb-4 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:bg-accent-foreground transition-colors"
           >
             {post.category.title}
           </Link>
         )}
 
-        {/* Title */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 max-w-3xl font-display">
+        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-foreground leading-tight mb-5">
           {post.title}
         </h1>
 
-        {/* Meta info */}
-        <div className="flex flex-wrap gap-4 sm:gap-6 text-sm text-white/90">
-          {post.publishedAt && (
-            <div className="flex items-center gap-2">
-              <Calendar size={16} />
-              {formatDateTimeShort(post.publishedAt)}
-            </div>
-          )}
+        {post.excerpt && (
+          <p className="text-foreground-muted text-lg leading-relaxed mb-6">
+            {post.excerpt}
+          </p>
+        )}
+
+        <div className="flex flex-wrap items-center gap-4 text-sm text-foreground-muted pb-6 border-b border-border">
           {post.author && (
-            <div className="flex items-center gap-2">
-              <User size={16} />
-              {post.author.name}
-            </div>
+            <span className="font-medium text-foreground">{post.author.name}</span>
           )}
-          {post.excerpt && (
-            <div className="flex items-center gap-2">
-              <Clock size={16} />
-              {readTime(post.excerpt)}
-            </div>
-          )}
+          <div className="flex items-center gap-1.5">
+            <Calendar size={14} />
+            <time dateTime={post.publishedAt}>
+              {formatDateTimeShort(post.publishedAt)}
+            </time>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <Clock size={14} />
+            {readTime(post.body)}
+          </div>
         </div>
       </div>
     </section>
