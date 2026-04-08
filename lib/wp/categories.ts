@@ -4,33 +4,26 @@ import { fetchWp } from "./client";
 import { WpCategory } from "./types";
 import { mapWpCategoryToCategory } from "./map";
 
-/**
- * Get all categories sorted by post count
- */
+const CATEGORY_FIELDS = "id,name,slug,description,count";
+
 export const getCategories = cache(async (): Promise<Category[]> => {
   const categories = await fetchWp<WpCategory[]>("/categories", {
     per_page: 100,
     orderby: "count",
     order: "desc",
+    hide_empty: true,
+    _fields: CATEGORY_FIELDS,
   });
-
-  return categories?.map(mapWpCategoryToCategory) || [];
+  return categories.map(mapWpCategoryToCategory);
 });
 
-/**
- * Get single category by slug
- */
 export const getCategoryBySlug = cache(
   async (slug: string): Promise<Category | null> => {
     const categories = await fetchWp<WpCategory[]>("/categories", {
       slug,
-      number: 1,
+      _fields: CATEGORY_FIELDS,
     });
-
-    if (!categories || categories.length === 0) {
-      return null;
-    }
-
+    if (!categories[0]) return null;
     return mapWpCategoryToCategory(categories[0]);
   }
 );

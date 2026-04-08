@@ -1,121 +1,146 @@
 "use client";
 
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { usePosts } from "@/hooks/usePosts";
+import { usePosts, type BlogPostsQueryData } from "@/hooks/usePosts";
 import { useCategories } from "@/hooks/useCategories";
 import { PostGrid } from "./PostGrid";
 import { PostMasonry } from "./PostMasonry";
+import { BlogPagination, buildBlogListHref } from "./BlogPagination";
 import { LayoutGrid, Columns } from "lucide-react";
-import type { Post, Category } from "@/types";
+import type { Category } from "@/types";
 import { cn } from "@/lib/utils";
+import { BLOG_POSTS_PER_PAGE } from "@/lib/blogPagination";
 
 interface PostListProps {
-  initialPosts?: Post[];
+  initialBlogPage?: BlogPostsQueryData;
   initialCategories?: Category[];
 }
 
-export function PostList({ initialPosts, initialCategories }: PostListProps) {
-  const [activeCategorySlug, setActiveCategorySlug] = useState<string | null>(null);
+export function PostList({ initialBlogPage, initialCategories }: PostListProps) {
   const [viewMode, setViewMode] = useState<"grid" | "masonry">("grid");
+  const searchParams = useSearchParams();
+  const rawPage = searchParams.get("page");
+  const page = Math.max(1, Number.parseInt(rawPage ?? "1", 10) || 1);
+  const categorySlug = searchParams.get("category")?.trim() || undefined;
+  const categoryId =
+    categorySlug && initialCategories?.length
+      ? initialCategories.find((c) => c.slug === categorySlug)?.id
+      : undefined;
 
-  const { data: allPosts = [] } = usePosts({ initialData: initialPosts });
+  const { data, isLoading } = usePosts({
+    page,
+    perPage: BLOG_POSTS_PER_PAGE,
+    categoryId,
+    initialData: initialBlogPage,
+  });
   const { data: categories = [] } = useCategories(initialCategories);
 
-  const filtered = activeCategorySlug
-    ? allPosts.filter((p) => p.category?.slug === activeCategorySlug)
-    : allPosts;
+  const posts = data?.posts ?? [];
+  const total = data?.total;
+  const totalPages = Math.max(1, data?.totalPages ?? 1);
 
   return (
     <div>
-      {/* Filter + view toggle */}
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-8">
-        {/* Category filter pills */}
+      {/* Category filter + view toggle */}
+      <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setActiveCategorySlug(null)}
+          <Link
+            href="/blog"
             className={cn(
-              "px-4 py-1.5 rounded-full text-sm font-medium transition-colors border",
-              !activeCategorySlug
-                ? "bg-primary text-primary-foreground border-primary"
+              "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
+              !categorySlug
+                ? "border-primary bg-primary text-primary-foreground"
                 : "border-border text-foreground-muted hover:border-primary hover:text-primary"
             )}
           >
             All Recipes
-          </button>
+          </Link>
           {categories.map((cat) => (
-            <button
+            <Link
               key={cat._id}
-              onClick={() =>
-                setActiveCategorySlug(
-                  activeCategorySlug === cat.slug ? null : cat.slug
-                )
-              }
+              href={buildBlogListHref(1, cat.slug)}
               className={cn(
-                "px-4 py-1.5 rounded-full text-sm font-medium transition-colors border",
-                activeCategorySlug === cat.slug
-                  ? "bg-primary text-primary-foreground border-primary"
+                "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors capitalize",
+                categorySlug === cat.slug
+                  ? "border-primary bg-primary text-primary-foreground"
                   : "border-border text-foreground-muted hover:border-primary hover:text-primary"
               )}
             >
               {cat.title}
-            </button>
+            </Link>
           ))}
         </div>
 
-        {/* View mode toggle */}
-        <div className="flex gap-1 bg-muted p-1 rounded-lg border border-border">
+        <div className="flex gap-1 shrink-0">
           <button
+            type="button"
             onClick={() => setViewMode("grid")}
             className={cn(
-              "p-2 rounded-lg transition-colors",
+              "rounded-lg p-2 transition-colors",
               viewMode === "grid"
-                ? "bg-primary text-primary-foreground"
+                ? "bg-primary-muted text-primary"
                 : "text-foreground-muted hover:text-foreground"
             )}
             aria-label="Grid view"
-            title="Grid View"
           >
             <LayoutGrid size={18} />
           </button>
           <button
+            type="button"
             onClick={() => setViewMode("masonry")}
             className={cn(
-              "p-2 rounded-lg transition-colors",
+              "rounded-lg p-2 transition-colors",
               viewMode === "masonry"
-                ? "bg-primary text-primary-foreground"
+                ? "bg-primary-muted text-primary"
                 : "text-foreground-muted hover:text-foreground"
             )}
             aria-label="Masonry view"
-            title="Masonry View"
           >
             <Columns size={18} />
           </button>
         </div>
       </div>
 
-      {/* Results count */}
-      <div className="mb-6">
-        <p className="text-sm text-foreground-muted">
-          {filtered.length} {filtered.length === 1 ? "recipe" : "recipes"} {activeCategorySlug && `in ${categories.find(c => c.slug === activeCategorySlug)?.title}`}
-        </p>
-      </div>
+      {/* Post count */}
+      <p className="mb-6 text-sm text-foreground-muted">
+        {typeof total === "number"
+          ? `${total} ${total === 1 ? "recipe" : "recipes"}`
+          : `${posts.length} on this page`}
+        {categorySlug ? (
+          <>
+            {" "}in{" "}
+            <span className="font-semibold capitalize text-primary">
+              {categorySlug.replace(/-/g, " ")}
+            </span>
+          </>
+        ) : null}
+      </p>
 
-      {/* Posts grid/masonry */}
-      {filtered.length > 0 ? (
-        viewMode === "grid" ? (
-          <PostGrid posts={filtered} />
-        ) : (
-          <PostMasonry posts={filtered} />
-        )
-      ) : (
+      {isLoading ? (
+        <div className="py-16 text-center text-foreground-muted">
+          Loading recipes…
+        </div>
+      ) : posts.length === 0 ? (
         <div className="py-16 text-center">
-          <p className="text-2xl mb-3">🔍</p>
-          <p className="text-foreground font-medium mb-2">No recipes found</p>
-          <p className="text-foreground-muted text-sm">
-            Try selecting a different category or browse all recipes
+          <p className="text-foreground-muted">
+            No recipes found. Check back soon!
           </p>
         </div>
+      ) : viewMode === "grid" ? (
+        <PostGrid posts={posts} />
+      ) : (
+        <PostMasonry posts={posts} />
       )}
+
+      {!isLoading && posts.length > 0 ? (
+        <BlogPagination
+          page={page}
+          totalPages={totalPages}
+          categorySlug={categorySlug}
+        />
+      ) : null}
     </div>
   );
 }

@@ -1,50 +1,52 @@
 @import "tailwindcss";
 
-/* ─── SnapMealsDaily — red-forward, darker surfaces (aligned with sister sites) ─ */
+/* ─── SnapMealsDaily — warm tomato-red, cream surfaces, editorial food magazine ─ */
 :root {
-  /* Surfaces — slightly deeper than pure off-white */
-  --background:           #f4f1f0;
-  --background-alt:       #ebe8e6;
+  /* Surfaces — warm cream, food-forward */
+  --background:           #fffdf9;
+  --background-alt:       #fff8f0;
   --card:                 #ffffff;
-  --card-foreground:      #161a1e;
+  --card-foreground:      #1a1006;
   --popover:              #ffffff;
-  --popover-foreground:   #161a1e;
-  --surface-warm:         #efecea;
+  --popover-foreground:   #1a1006;
+  --surface-warm:         #fff3e8;
 
   /* Text */
-  --foreground:           #12161a;
-  --foreground-muted:     #4a5056;
-  --foreground-subtle:    #6b7280;
+  --foreground:           #1a1006;
+  --foreground-muted:     #5c4a36;
+  --foreground-subtle:    #9c8874;
 
-  /* Brand — deep crimson */
-  --primary:              #b91c2e;
+  /* Brand — vivid tomato / chili red */
+  --primary:              #e85d1a;
   --primary-foreground:   #ffffff;
-  --primary-muted:        #fce8ec;
-  --primary-hover:        #991b1b;
+  --primary-muted:        #fff0e8;
+  --primary-hover:        #c94d14;
 
-  /* Secondary — cool charcoal */
-  --secondary:            #2c3238;
-  --secondary-foreground: #f4f1f0;
+  /* Amber accent */
+  --accent:               #d97706;
+  --accent-foreground:    #92400e;
+  --accent-muted:         #fef3c7;
 
-  --muted:                #e8e5e3;
-  --muted-foreground:     #6b7280;
+  /* Secondary — warm dark */
+  --secondary:            #2d1f12;
+  --secondary-foreground: #fff8f0;
 
-  --accent:               #fce8ec;
-  --accent-foreground:    #991b1b;
+  --muted:                #f5ede3;
+  --muted-foreground:     #9c8874;
 
   --destructive:          hsl(0 72% 50%);
   --destructive-foreground: hsl(0 0% 98%);
 
-  --border:               #d8d4d1;
-  --input:                #d8d4d1;
-  --ring:                 #b91c2e;
+  --border:               #e8d9c8;
+  --input:                #e8d9c8;
+  --ring:                 #e85d1a;
   --radius:               0.625rem;
   --section-gap:          4rem;
 
-  --shadow-sm:    0 2px 8px rgba(0,0,0,0.07);
-  --shadow-md:    0 8px 24px rgba(0,0,0,0.09);
-  --shadow-lg:    0 20px 48px rgba(0,0,0,0.11);
-  --shadow-brand: 0 4px 20px rgba(185,28,46,0.28);
+  --shadow-sm:    0 2px 8px rgba(60,30,10,0.07);
+  --shadow-md:    0 8px 24px rgba(60,30,10,0.10);
+  --shadow-lg:    0 20px 48px rgba(60,30,10,0.13);
+  --shadow-brand: 0 4px 20px rgba(232,93,26,0.32);
 }
 
 @media (min-width: 768px) {
@@ -52,38 +54,36 @@
 }
 
 .dark {
-  --background:           #12161a;
-  --background-alt:       #1a1f24;
-  --card:                   #22282e;
-  --card-foreground:      #f1edeb;
-  --popover:                #22282e;
-  --popover-foreground:   #f1edeb;
-  --surface-warm:         #262c32;
+  --background:           #160e05;
+  --background-alt:       #1e1409;
+  --card:                 #26190d;
+  --card-foreground:      #f5ede3;
+  --popover:              #26190d;
+  --popover-foreground:   #f5ede3;
+  --surface-warm:         #2e1f10;
 
-  --foreground:           #f1edeb;
-  --foreground-muted:     #9ca3af;
-  --foreground-subtle:    #6b7280;
+  --foreground:           #f5ede3;
+  --foreground-muted:     #c4a882;
+  --foreground-subtle:    #8a7060;
 
-  --primary:              #e11d48;
+  --primary:              #f07040;
   --primary-foreground:   #ffffff;
-  --primary-muted:        #3f1018;
-  --primary-hover:        #f43f5e;
+  --primary-muted:        #3d1a08;
+  --primary-hover:        #e85d1a;
 
-  --secondary:            #4b5563;
-  --secondary-foreground: #f1edeb;
+  --accent:               #f59e0b;
+  --accent-foreground:    #fde68a;
+  --accent-muted:         #3d2a00;
 
-  --muted:                #22282e;
-  --muted-foreground:     #9ca3af;
+  --secondary:            #4a3520;
+  --secondary-foreground: #f5ede3;
 
-  --accent:               #3f1018;
-  --accent-foreground:    #fb7185;
+  --muted:                #2e1f10;
+  --muted-foreground:     #9c8874;
 
-  --destructive:          hsl(0 62% 50%);
-  --destructive-foreground: hsl(0 0% 98%);
-
-  --border:               #343b42;
-  --input:                #343b42;
-  --ring:                 #e11d48;
+  --border:               #3d2a18;
+  --input:                #3d2a18;
+  --ring:                 #f07040;
 }
 
 @theme inline {
@@ -100,19 +100,20 @@
   --color-primary:              var(--primary);
   --color-primary-foreground:   var(--primary-foreground);
   --color-primary-muted:        var(--primary-muted);
+  --color-accent:               var(--accent);
+  --color-accent-foreground:    var(--accent-foreground);
+  --color-accent-muted:         var(--accent-muted);
   --color-secondary:            var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted:                var(--muted);
   --color-muted-foreground:     var(--muted-foreground);
-  --color-accent:               var(--accent);
-  --color-accent-foreground:    var(--accent-foreground);
   --color-destructive:          var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border:               var(--border);
   --color-input:                var(--input);
   --color-ring:                 var(--ring);
-  --font-display: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
-  --font-sans:    var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-sans:    var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
   --radius-sm:  calc(var(--radius) - 2px);
   --radius-md:  var(--radius);
   --radius-lg:  calc(var(--radius) + 4px);
@@ -136,6 +137,8 @@ body {
 
 .font-display { font-family: var(--font-display); }
 
+/* ─── Utility classes ──────────────────────────────────────────────────────── */
+
 .card-hover {
   transition: transform 300ms cubic-bezier(0.22,1,0.36,1),
               box-shadow 300ms cubic-bezier(0.22,1,0.36,1);
@@ -148,7 +151,7 @@ body {
 .img-zoom img {
   transition: transform 600ms cubic-bezier(0.22,1,0.36,1);
 }
-.img-zoom:hover img { transform: scale(1.05); }
+.img-zoom:hover img { transform: scale(1.06); }
 
 .nav-link { position: relative; }
 .nav-link::after {
@@ -171,37 +174,80 @@ body {
 
 .overline {
   font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  font-family: var(--font-sans);
 }
+
+/* ─── Gradient & decorative ──────────────────────────────────────────────── */
+
+.gradient-brand {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.badge-recipe {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-family: var(--font-sans);
+}
+
+/* ─── Article / Prose ────────────────────────────────────────────────────── */
 
 .prose-cozy {
   max-width: none;
   color: var(--foreground);
-  line-height: 1.8;
+  line-height: 1.85;
   font-size: 1.0625rem;
+  font-family: var(--font-sans);
 }
 .prose-cozy h2 {
   font-family: var(--font-display);
-  font-size: 1.75rem;
+  font-size: 1.875rem;
   font-weight: 700;
   border-left: 4px solid var(--primary);
   padding-left: 0.875rem;
-  margin-top: 2.5rem;
+  margin-top: 2.75rem;
   margin-bottom: 1rem;
   color: var(--foreground);
+  line-height: 1.3;
 }
 .prose-cozy h3 {
   font-family: var(--font-display);
-  font-size: 1.375rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
   color: var(--foreground);
+  line-height: 1.35;
 }
-.prose-cozy p { margin-bottom: 1.25rem; }
-.prose-cozy a { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+.prose-cozy h4 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
+}
+.prose-cozy p { margin-bottom: 1.35rem; }
+.prose-cozy a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+}
 .prose-cozy a:hover { color: var(--primary-hover); }
 .prose-cozy blockquote {
   background: var(--primary-muted);
@@ -212,19 +258,78 @@ body {
   font-size: 1.15rem;
   font-weight: 500;
   color: var(--foreground);
-  margin: 1.5rem 0;
+  margin: 1.75rem 0;
+  font-family: var(--font-display);
 }
 .prose-cozy blockquote p { margin: 0; }
-.prose-cozy img { border-radius: var(--radius-lg); width: 100%; height: auto; }
-.prose-cozy ul { padding-left: 1.5rem; margin-bottom: 1.25rem; }
+.prose-cozy img {
+  border-radius: var(--radius-lg);
+  width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+}
+.prose-cozy ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1.35rem;
+  list-style-type: disc;
+}
+.prose-cozy ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.35rem;
+  list-style-type: decimal;
+}
 .prose-cozy li { margin-bottom: 0.5rem; }
 .prose-cozy strong { font-weight: 700; }
-
-.gradient-brand {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.prose-cozy hr {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin: 2.5rem 0;
+}
+.prose-cozy table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+.prose-cozy th {
+  background: var(--primary-muted);
+  font-weight: 700;
+  padding: 0.6rem 0.875rem;
+  text-align: left;
+  border: 1px solid var(--border);
+}
+.prose-cozy td {
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--border);
+}
+.prose-cozy tr:nth-child(even) td {
+  background: var(--background-alt);
 }
 
-html.dark body { background-color: #12161a; }
+/* ─── FAQ accordion (matching easybeautyhacks) ───────────────────────────── */
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+}
+.faq-question {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.faq-answer {
+  margin-top: 0.75rem;
+  color: var(--foreground-muted);
+  line-height: 1.7;
+}
+
+/* ─── Header category bar accent ─────────────────────────────────────────── */
+.header-accent-bar {
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  height: 3px;
+}
+
+html.dark body { background-color: #160e05; }

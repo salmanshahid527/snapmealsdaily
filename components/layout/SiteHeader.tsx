@@ -41,35 +41,42 @@ export function SiteHeader({
           : "bg-card border-b border-border"
       )}
     >
+      {/* Gradient accent line at very top */}
+      <div className="header-accent-bar" />
+
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          {/* Logo */}
           <Link href="/" className="shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/logo.svg"
               alt={SITE_NAME}
-              className="h-9 w-auto"
-              width={200}
-              height={36}
+              className="h-10 w-auto"
+              width={220}
+              height={40}
             />
           </Link>
 
+          {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => (
               <Link
                 key={`${link.href}:${link.label}`}
                 href={link.href}
-                className="nav-link text-sm font-medium text-foreground-muted hover:text-foreground transition-colors"
+                className="nav-link text-sm font-semibold text-foreground-muted hover:text-foreground transition-colors"
               >
                 {link.label}
               </Link>
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          {/* Actions */}
+          <div className="flex items-center gap-1">
             <Link
               href="/search"
-              className="p-2 rounded-lg text-foreground-muted hover:text-primary hover:bg-primary-muted transition-colors"
+              className="p-2 rounded-lg text-foreground-muted hover:text-primary transition-colors"
+              style={{ "--hover-bg": "var(--primary-muted)" } as React.CSSProperties}
               aria-label="Search"
             >
               <Search size={18} />
@@ -80,10 +87,14 @@ export function SiteHeader({
                 onClick={() =>
                   setTheme(resolvedTheme === "dark" ? "light" : "dark")
                 }
-                className="p-2 rounded-lg text-foreground-muted hover:text-primary hover:bg-primary-muted transition-colors"
+                className="p-2 rounded-lg text-foreground-muted hover:text-primary transition-colors"
                 aria-label="Toggle theme"
               >
-                {resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                {resolvedTheme === "dark" ? (
+                  <Sun size={18} />
+                ) : (
+                  <Moon size={18} />
+                )}
               </button>
             )}
 
@@ -92,15 +103,19 @@ export function SiteHeader({
         </div>
       </div>
 
+      {/* Category sub-bar */}
       {categories.length > 0 && (
-        <div className="hidden lg:block border-t border-border bg-background-alt">
+        <div
+          className="hidden lg:block border-t border-border"
+          style={{ background: "var(--background-alt)" }}
+        >
           <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-6 h-10 overflow-x-auto scrollbar-hide">
-              {categories.slice(0, 10).map((cat) => (
+              {categories.slice(0, 12).map((cat) => (
                 <Link
                   key={cat._id}
                   href={`/category/${cat.slug}`}
-                  className="shrink-0 text-xs font-medium text-foreground-muted hover:text-primary transition-colors nav-link whitespace-nowrap"
+                  className="shrink-0 text-xs font-semibold text-foreground-subtle hover:text-primary transition-colors nav-link whitespace-nowrap"
                 >
                   {cat.title}
                 </Link>

@@ -8,3 +8,4 @@ export * from "./pages";
 export * from "./author";
 export * from "./nav";
 export * from "./mapWpPagesToNavExtras";
+export * from "./rankmath";

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Poppins } from "next/font/google";
+import { Playfair_Display, Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers/Providers";
 import { SiteHeader } from "@/components/layout/SiteHeader";
@@ -15,8 +15,15 @@ import {
   DEFAULT_OG_IMAGE,
 } from "@/lib/constants";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const playfairDisplay = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const nunitoSans = Nunito_Sans({
+  variable: "--font-nunito",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
@@ -37,6 +44,8 @@ export const metadata: Metadata = {
     "breakfast",
     "food blog",
     "Pinterest recipes",
+    "weeknight meals",
+    "quick recipes",
   ],
   authors: [{ name: SITE_NAME }],
   creator: SITE_NAME,
@@ -97,13 +106,13 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="theme-color" content="#b91c2e" />
+        <meta name="theme-color" content="#e85d1a" />
         {wpOrigin && (
           <link rel="preconnect" href={wpOrigin} crossOrigin="anonymous" />
         )}
       </head>
       <body
-        className={`${poppins.variable} antialiased min-h-screen flex flex-col`}
+        className={`${playfairDisplay.variable} ${nunitoSans.variable} antialiased min-h-screen flex flex-col`}
       >
         {gaId && (
           <>

@@ -1,111 +1,141 @@
 "use client";
 
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { Post, PostDetail } from "@/types";
-import { fetchWpClient } from "@/lib/wp/client";
-import { WpPost } from "@/lib/wp/types";
+import { useQuery } from "@tanstack/react-query";
+import { BLOG_POSTS_PER_PAGE } from "@/lib/blogPagination";
+import { fetchWpClient, fetchWpClientPaginated } from "@/lib/wp/client";
 import { mapWpPostToPost, mapWpPostToPostDetail } from "@/lib/wp/map";
+import { processPostBody } from "@/lib/html";
+import type { WpPost } from "@/lib/wp/types";
+import type { Post, PostDetail } from "@/types";
 
-/**
- * Fetch all blog posts
- */
+const POST_LIST_FIELDS =
+  "id,title,slug,excerpt,date,modified,sticky,categories,_links";
+
+export type BlogPostsQueryData = {
+  posts: Post[];
+  totalPages: number;
+  total: number;
+};
+
+async function fetchPostsForBlogPage(options: {
+  page: number;
+  perPage: number;
+  categoryId?: number;
+}): Promise<BlogPostsQueryData> {
+  try {
+    const params: Record<string, string | number | boolean> = {
+      _embed: 1,
+      _fields: POST_LIST_FIELDS,
+      per_page: options.perPage,
+      page: options.page,
+      orderby: "date",
+      order: "desc",
+      status: "publish",
+    };
+    if (options.categoryId != null) {
+      params.categories = options.categoryId;
+    }
+    const { data, totalPages, total } = await fetchWpClientPaginated<WpPost[]>(
+      "/posts",
+      params
+    );
+    const posts = Array.isArray(data) ? data.map(mapWpPostToPost) : [];
+    return { posts, totalPages, total };
+  } catch {
+    return { posts: [], totalPages: 0, total: 0 };
+  }
+}
+
+async function fetchPostBySlug(slug: string): Promise<PostDetail | null> {
+  const data = await fetchWpClient<WpPost[]>("/posts", {
+    slug,
+    per_page: 1,
+    _embed: 1,
+  });
+  if (!data[0]) return null;
+  const detail = mapWpPostToPostDetail(data[0]);
+  detail.body = processPostBody(detail.body);
+  return detail;
+}
+
+async function fetchPostsForCategory(categoryId: number): Promise<Post[]> {
+  const data = await fetchWpClient<WpPost[]>("/posts", {
+    _embed: 1,
+    categories: categoryId,
+    per_page: 50,
+    orderby: "date",
+    order: "desc",
+    status: "publish",
+  });
+  return data.map(mapWpPostToPost);
+}
+
+async function fetchPostsForMultipleCategories(
+  categoryIds: number[],
+  limitPerCategory: number
+): Promise<Record<number, Post[]>> {
+  if (!categoryIds.length) return {};
+  const maxPosts = Math.min(categoryIds.length * limitPerCategory * 3, 100);
+  const data = await fetchWpClient<WpPost[]>("/posts", {
+    _embed: 1,
+    per_page: maxPosts,
+    orderby: "date",
+    order: "desc",
+    status: "publish",
+  });
+
+  const idSet = new Set(categoryIds);
+  const result: Record<number, Post[]> = {};
+  const count: Record<number, number> = {};
+  for (const id of categoryIds) {
+    result[id] = [];
+    count[id] = 0;
+  }
+
+  for (const wp of data) {
+    for (const cid of wp.categories) {
+      if (idSet.has(cid) && (count[cid] ?? 0) < limitPerCategory) {
+        result[cid].push(mapWpPostToPost(wp));
+        count[cid] = (count[cid] ?? 0) + 1;
+      }
+    }
+  }
+  return result;
+}
+
+// ─── Hooks ────────────────────────────────────────────────────────────────────
+
 export function usePosts(options?: {
-  initialData?: Post[];
-}): UseQueryResult<Post[]> {
+  page?: number;
+  perPage?: number;
+  categoryId?: number;
+  initialData?: BlogPostsQueryData;
+}) {
+  const page = Math.max(1, options?.page ?? 1);
+  const perPage = options?.perPage ?? BLOG_POSTS_PER_PAGE;
+  const categoryId = options?.categoryId;
+  const initialData = options?.initialData;
+  const hasInitial = initialData !== undefined && initialData !== null;
+  const cacheKey = categoryId != null ? `cat:${categoryId}` : "all";
+
   return useQuery({
-    queryKey: ["posts"],
-    queryFn: async () => {
-      const posts = await fetchWpClient<WpPost[]>("/posts", {
-        per_page: 50,
-        _embed: true,
-        orderby: "date",
-        order: "desc",
-      });
-      return posts.map(mapWpPostToPost);
-    },
-    staleTime: options?.initialData ? Infinity : 2 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-    initialData: options?.initialData,
-    retry: 1,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
+    queryKey: ["posts", "blog", cacheKey, page, perPage],
+    queryFn: () => fetchPostsForBlogPage({ page, perPage, categoryId }),
+    initialData: hasInitial ? initialData : undefined,
+    initialDataUpdatedAt: hasInitial ? Date.now() : undefined,
+    staleTime: hasInitial ? Infinity : 0,
   });
 }
 
-/**
- * Fetch single post by slug
- */
-export function usePost(
-  slug: string | null,
-  initialData?: PostDetail | null
-): UseQueryResult<PostDetail | null> {
+export function usePost(slug: string | null, initialData?: PostDetail | null) {
+  const fromServer = initialData !== undefined;
   return useQuery({
     queryKey: ["post", slug],
-    queryFn: async () => {
-      if (!slug) return null;
-      const posts = await fetchWpClient<WpPost[]>("/posts", {
-        slug,
-        _embed: true,
-      });
-      if (!posts || posts.length === 0) return null;
-      return mapWpPostToPostDetail(posts[0]);
-    },
-    enabled: !!slug,
-    staleTime: initialData ? Infinity : 2 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-    initialData: initialData || undefined,
-    retry: 1,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-  });
-}
-
-/**
- * Fetch posts for specific category
- */
-export function usePostsForCategory(
-  categoryId: number
-): UseQueryResult<Post[]> {
-  return useQuery({
-    queryKey: ["posts-category", categoryId],
-    queryFn: async () => {
-      const posts = await fetchWpClient<WpPost[]>("/posts", {
-        categories: categoryId,
-        per_page: 50,
-        _embed: true,
-      });
-      return posts?.map(mapWpPostToPost) || [];
-    },
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-    retry: 1,
-  });
-}
-
-/**
- * Fetch featured posts
- */
-export function useFeaturedPosts(initialData?: Post[]): UseQueryResult<Post[]> {
-  return useQuery({
-    queryKey: ["featured-posts"],
-    queryFn: async () => {
-      const posts = await fetchWpClient<WpPost[]>("/posts", {
-        per_page: 6,
-        _embed: true,
-        orderby: "date",
-        order: "desc",
-      });
-      return posts?.map(mapWpPostToPost) || [];
-    },
-    staleTime: initialData ? Infinity : 2 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-    initialData,
-    retry: 1,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
+    queryFn: () => fetchPostBySlug(slug!),
+    enabled: !!slug && !fromServer,
+    initialData: fromServer ? initialData : undefined,
+    initialDataUpdatedAt: fromServer ? Date.now() : undefined,
+    staleTime: fromServer ? Infinity : 0,
   });
 }
 
@@ -116,19 +146,27 @@ export function usePostsByCategory(
   const fromServer = initialData !== undefined && !!categoryId;
   return useQuery({
     queryKey: ["posts", "category", categoryId],
-    queryFn: async () => {
-      const posts = await fetchWpClient<WpPost[]>("/posts", {
-        categories: categoryId!,
-        per_page: 50,
-        _embed: true,
-        orderby: "date",
-        order: "desc",
-        status: "publish",
-      });
-      return posts?.map(mapWpPostToPost) || [];
-    },
+    queryFn: () => fetchPostsForCategory(categoryId!),
     enabled: !!categoryId && !fromServer,
     initialData: fromServer ? initialData : undefined,
+    initialDataUpdatedAt: fromServer ? Date.now() : undefined,
+    staleTime: fromServer ? Infinity : 0,
+  });
+}
+
+export function usePostsForMultipleCategories(
+  categoryIds: number[],
+  limitPerCategory: number,
+  initialData?: Record<number, Post[]> | null
+) {
+  const stableIds = [...categoryIds].sort((a, b) => a - b);
+  const fromServer = initialData !== undefined && stableIds.length > 0;
+  return useQuery({
+    queryKey: ["posts", "categories-batch", stableIds, limitPerCategory],
+    queryFn: () =>
+      fetchPostsForMultipleCategories(stableIds, limitPerCategory),
+    enabled: stableIds.length > 0 && !fromServer,
+    initialData: fromServer ? initialData ?? undefined : undefined,
     initialDataUpdatedAt: fromServer ? Date.now() : undefined,
     staleTime: fromServer ? Infinity : 0,
   });

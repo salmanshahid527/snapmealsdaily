@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Calendar, Clock, User } from "lucide-react";
+import { Calendar, Clock, ChefHat } from "lucide-react";
 import { formatDateTimeShort, readTime, cn } from "@/lib/utils";
 import type { Post } from "@/types";
 
@@ -20,7 +20,7 @@ export function PostCard({
   return (
     <article
       className={cn(
-        "group bg-card rounded-xl overflow-hidden border border-border card-hover img-zoom h-full flex flex-col",
+        "group bg-card rounded-2xl overflow-hidden border border-border card-hover img-zoom h-full flex flex-col",
         className
       )}
     >
@@ -28,7 +28,7 @@ export function PostCard({
         <div
           className={cn(
             "relative overflow-hidden bg-muted",
-            variant === "featured" ? "aspect-[16/9]" : "aspect-[16/10]"
+            variant === "featured" ? "aspect-[16/9]" : "aspect-[4/3]"
           )}
         >
           {post.featuredImage ? (
@@ -41,19 +41,36 @@ export function PostCard({
               priority={priority}
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-primary-muted to-muted flex items-center justify-center">
-              <span className="font-display text-4xl text-primary/30">✦</span>
+            <div
+              className="absolute inset-0 flex items-center justify-center"
+              style={{
+                background:
+                  "linear-gradient(135deg, var(--primary-muted) 0%, var(--accent-muted) 100%)",
+              }}
+            >
+              <ChefHat size={40} className="opacity-20" style={{ color: "var(--primary)" }} />
             </div>
           )}
 
+          {/* Category badge */}
           {post.category && (
-            <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-semibold bg-primary text-primary-foreground">
+            <span
+              className="absolute top-3 left-3 badge-recipe"
+              style={{ background: "var(--primary)", color: "#fff" }}
+            >
               {post.category.title}
             </span>
           )}
 
+          {/* Read time */}
           {post.excerpt && (
-            <span className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-card/90 text-foreground-muted backdrop-blur-sm">
+            <span
+              className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-sm"
+              style={{
+                background: "rgba(255,255,255,0.92)",
+                color: "var(--foreground-muted)",
+              }}
+            >
               <Clock size={10} />
               {readTime(post.excerpt)}
             </span>
@@ -65,7 +82,7 @@ export function PostCard({
         {post.category && (
           <Link
             href={`/category/${post.category.slug}`}
-            className="overline text-foreground-muted hover:text-primary transition-colors mb-2 block"
+            className="overline text-foreground-subtle hover:text-primary transition-colors mb-2 block"
           >
             {post.category.title}
           </Link>
@@ -74,8 +91,8 @@ export function PostCard({
         <Link href={`/${post.slug}`}>
           <h3
             className={cn(
-              "font-display font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2",
-              variant === "featured" ? "text-2xl" : "text-xl"
+              "font-display font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2 leading-snug",
+              variant === "featured" ? "text-2xl" : "text-lg"
             )}
           >
             {post.title}
@@ -88,7 +105,10 @@ export function PostCard({
           </p>
         )}
 
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs text-foreground-subtle mt-auto">
+        <div
+          className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs mt-auto"
+          style={{ color: "var(--foreground-subtle)" }}
+        >
           <span className="inline-flex items-center gap-1.5">
             <Calendar size={11} />
             <time dateTime={post.publishedAt}>
@@ -97,9 +117,8 @@ export function PostCard({
           </span>
           {post.author?.name ? (
             <>
-              <span aria-hidden="true">•</span>
+              <span aria-hidden="true">·</span>
               <span className="inline-flex items-center gap-1">
-                <User size={11} />
                 {post.author.name}
               </span>
             </>

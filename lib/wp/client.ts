@@ -1,159 +1,153 @@
-/**
- * Server-side fetch wrapper for WordPress REST API
- * Uses ISR cache (revalidate: 60s)
- * Falls back to mock data if API is unavailable
- */
-
-import { mockCategories, mockPosts } from "./mock-data";
+/** Lazy so importing this module never throws during chunk evaluation. */
+function getApiBase(): string {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
+  if (!apiUrl) {
+    throw new Error(
+      "NEXT_PUBLIC_API_URL is not set — expected e.g. https://api.snapmealsdaily.com/wp-json"
+    );
+  }
+  return `${apiUrl}/wp/v2`;
+}
 
 export async function fetchWp<T>(
   path: string,
   params?: Record<string, string | number | boolean | undefined>
 ): Promise<T> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const url = new URL(`${getApiBase()}${path}`);
 
-  if (!baseUrl) {
-    console.warn("NEXT_PUBLIC_API_URL is not set - using mock data");
-    return getMockData(path) as T;
+  if (params) {
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) {
+        url.searchParams.set(key, String(value));
+      }
+    }
   }
 
-  try {
-    const url = new URL(`${baseUrl}${path}`);
+  const res = await fetch(url.toString(), {
+    next: { revalidate: 60 },
+    headers: { "Content-Type": "application/json" },
+  });
 
-    // Add query parameters
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          url.searchParams.append(key, String(value));
-        }
-      });
-    }
-
-    const res = await fetch(url.toString(), {
-      next: { revalidate: 60 },
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (res.status === 404) {
-      return [] as unknown as T;
-    }
-
-    if (!res.ok) {
-      console.error(`WordPress API error: ${res.status}`, res.statusText);
-      console.log(`Using mock data for ${path} due to API error`);
-      return getMockData(path) as T;
-    }
-
-    return res.json();
-  } catch (error) {
-    console.error(`WordPress API fetch failed for ${path}:`, error);
-    console.log(`Using mock data for ${path} due to fetch error`);
-    return getMockData(path) as T;
+  if (!res.ok) {
+    if (res.status === 404) return [] as unknown as T;
+    throw new Error(`WP API error ${res.status}: ${url.toString()}`);
   }
+
+  return res.json() as Promise<T>;
 }
 
-function getMockData(path: string): unknown {
-  if (path.includes("categories")) {
-    return mockCategories;
-  }
-  if (path.includes("posts")) {
-    return mockPosts;
-  }
-  return [];
-}
+export type WpPaginatedResult<T> = {
+  data: T;
+  totalPages: number;
+  total: number;
+};
 
-/**
- * Paginated fetch for WordPress endpoints
- * Returns data + total page count
- * Falls back to mock data if API is unavailable
- */
+/** Fetch with WP pagination headers — used for sitemap and blog listing */
 export async function fetchWpPaginated<T>(
   path: string,
   params?: Record<string, string | number | boolean | undefined>
-): Promise<{ data: T; totalPages: number }> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+): Promise<WpPaginatedResult<T>> {
+  const url = new URL(`${getApiBase()}${path}`);
 
-  if (!baseUrl) {
-    console.warn("NEXT_PUBLIC_API_URL is not set - using mock data");
-    const mockData = getMockData(path);
-    return { data: mockData as T, totalPages: 1 };
+  if (params) {
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) {
+        url.searchParams.set(key, String(value));
+      }
+    }
   }
 
-  try {
-    const url = new URL(`${baseUrl}${path}`);
+  const res = await fetch(url.toString(), {
+    next: { revalidate: 3600 },
+    headers: { "Content-Type": "application/json" },
+  });
 
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          url.searchParams.append(key, String(value));
-        }
-      });
-    }
-
-    const res = await fetch(url.toString(), {
-      next: { revalidate: 3600 },
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (!res.ok) {
-      console.log(`Using mock data for ${path} due to API error (status: ${res.status})`);
-      const mockData = getMockData(path);
-      return { data: mockData as T, totalPages: 1 };
-    }
-
-    const totalPages = parseInt(res.headers.get("X-WP-TotalPages") || "1");
-    const data = await res.json();
-
-    return { data, totalPages };
-  } catch (error) {
-    console.error(`WordPress API paginated fetch failed for ${path}:`, error);
-    console.log(`Using mock data for ${path} due to fetch error`);
-    const mockData = getMockData(path);
-    return { data: mockData as T, totalPages: 1 };
+  if (!res.ok) {
+    if (res.status === 404)
+      return { data: [] as unknown as T, totalPages: 0, total: 0 };
+    throw new Error(`WP API error ${res.status}: ${url.toString()}`);
   }
+
+  const total = Number.parseInt(res.headers.get("X-WP-Total") ?? "0", 10);
+  const totalPagesRaw = Number.parseInt(
+    res.headers.get("X-WP-TotalPages") ?? "0",
+    10
+  );
+  const totalPages = Number.isFinite(totalPagesRaw)
+    ? Math.max(0, totalPagesRaw)
+    : 0;
+  const data = (await res.json()) as T;
+  return {
+    data,
+    totalPages,
+    total: Number.isFinite(total) ? total : 0,
+  };
 }
 
-/**
- * Client-side fetch for React Query
- * No ISR cache, fresh data only
- * Falls back to mock data if API is unavailable
- */
+/** Client-side only fetch (no ISR cache) — used inside React Query queryFn */
 export async function fetchWpClient<T>(
   path: string,
   params?: Record<string, string | number | boolean | undefined>
 ): Promise<T> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const url = new URL(`${getApiBase()}${path}`);
 
-  if (!baseUrl) {
-    console.warn("NEXT_PUBLIC_API_URL is not set - using mock data");
-    return getMockData(path) as T;
+  if (params) {
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) {
+        url.searchParams.set(key, String(value));
+      }
+    }
   }
 
-  try {
-    const url = new URL(`${baseUrl}${path}`);
+  const res = await fetch(url.toString(), {
+    headers: { "Content-Type": "application/json" },
+  });
 
-    if (params) {
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          url.searchParams.append(key, String(value));
-        }
-      });
-    }
-
-    const res = await fetch(url.toString(), {
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (!res.ok) {
-      console.error(`WordPress API error: ${res.status}`);
-      console.log(`Using mock data for ${path} due to API error`);
-      return getMockData(path) as T;
-    }
-
-    return res.json();
-  } catch (error) {
-    console.error(`WordPress API client fetch failed for ${path}:`, error);
-    console.log(`Using mock data for ${path} due to fetch error`);
-    return getMockData(path) as T;
+  if (!res.ok) {
+    if (res.status === 404) return [] as unknown as T;
+    throw new Error(`WP API error ${res.status}`);
   }
+
+  return res.json() as Promise<T>;
+}
+
+/** Client-side paginated fetch — used inside React Query for blog listing */
+export async function fetchWpClientPaginated<T>(
+  path: string,
+  params?: Record<string, string | number | boolean | undefined>
+): Promise<WpPaginatedResult<T>> {
+  const url = new URL(`${getApiBase()}${path}`);
+
+  if (params) {
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined) {
+        url.searchParams.set(key, String(value));
+      }
+    }
+  }
+
+  const res = await fetch(url.toString(), {
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!res.ok) {
+    if (res.status === 404)
+      return { data: [] as unknown as T, totalPages: 0, total: 0 };
+    throw new Error(`WP API error ${res.status}`);
+  }
+
+  const total = Number.parseInt(res.headers.get("X-WP-Total") ?? "0", 10);
+  const totalPagesRaw = Number.parseInt(
+    res.headers.get("X-WP-TotalPages") ?? "0",
+    10
+  );
+  const totalPages = Number.isFinite(totalPagesRaw)
+    ? Math.max(0, totalPagesRaw)
+    : 0;
+  const data = (await res.json()) as T;
+  return {
+    data,
+    totalPages,
+    total: Number.isFinite(total) ? total : 0,
+  };
 }
