@@ -35,19 +35,19 @@ export default function AboutPage() {
               </h2>
               <ul className="space-y-3 text-neutral-600 dark:text-neutral-400">
                 <li className="flex gap-3">
-                  <span className="text-orange-500 font-bold">✓</span>
+                  <span className="text-primary font-bold">✓</span>
                   <span>Delicious and tested recipes for every occasion</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-orange-500 font-bold">✓</span>
+                  <span className="text-primary font-bold">✓</span>
                   <span>Beautiful, Instagram-worthy food photography</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-orange-500 font-bold">✓</span>
+                  <span className="text-primary font-bold">✓</span>
                   <span>Detailed step-by-step cooking guides</span>
                 </li>
                 <li className="flex gap-3">
-                  <span className="text-orange-500 font-bold">✓</span>
+                  <span className="text-primary font-bold">✓</span>
                   <span>Ingredient substitutions and tips</span>
                 </li>
               </ul>

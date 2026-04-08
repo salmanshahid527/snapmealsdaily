@@ -38,15 +38,15 @@ export default function PrivacyPage() {
             </h3>
             <ul className="space-y-2 text-neutral-600 dark:text-neutral-400">
               <li className="flex gap-3">
-                <span className="text-orange-500">•</span>
+                <span className="text-primary">•</span>
                 <span><strong>Personal Data:</strong> Email address, when you subscribe to our newsletter</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-orange-500">•</span>
+                <span className="text-primary">•</span>
                 <span><strong>Usage Data:</strong> Information about how you access and use the Service</span>
               </li>
               <li className="flex gap-3">
-                <span className="text-orange-500">•</span>
+                <span className="text-primary">•</span>
                 <span><strong>Cookies:</strong> We may use cookies to enhance your experience</span>
               </li>
             </ul>
@@ -89,7 +89,7 @@ export default function PrivacyPage() {
             </h2>
             <p className="text-neutral-600 dark:text-neutral-400">
               If you have any questions about this Privacy Policy, please contact us at{' '}
-              <a href="mailto:privacy@snapmealsdaily.com" className="text-orange-600 dark:text-orange-400 hover:underline">
+              <a href="mailto:privacy@snapmealsdaily.com" className="text-primary hover:underline">
                 privacy@snapmealsdaily.com
               </a>
             </p>

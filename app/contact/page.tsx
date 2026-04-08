@@ -27,7 +27,7 @@ export default function ContactPage() {
                   </label>
                   <input
                     type="text"
-                    className="w-full px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="Your name"
                   />
                 </div>
@@ -37,7 +37,7 @@ export default function ContactPage() {
                   </label>
                   <input
                     type="email"
-                    className="w-full px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -47,7 +47,7 @@ export default function ContactPage() {
                   </label>
                   <input
                     type="text"
-                    className="w-full px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="How can we help?"
                   />
                 </div>
@@ -57,13 +57,13 @@ export default function ContactPage() {
                   </label>
                   <textarea
                     rows={5}
-                    className="w-full px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="Your message..."
                   ></textarea>
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 rounded-lg transition-colors"
+                  className="w-full bg-primary hover:bg-accent-foreground text-primary-foreground font-medium py-2 rounded-lg transition-colors"
                 >
                   Send Message
                 </button>
@@ -82,19 +82,19 @@ export default function ContactPage() {
                 <div className="flex gap-4">
                   <a
                     href="#"
-                    className="text-orange-600 dark:text-orange-400 hover:underline font-medium"
+                    className="text-primary hover:underline font-medium"
                   >
                     Pinterest
                   </a>
                   <a
                     href="#"
-                    className="text-orange-600 dark:text-orange-400 hover:underline font-medium"
+                    className="text-primary hover:underline font-medium"
                   >
                     Instagram
                   </a>
                   <a
                     href="#"
-                    className="text-orange-600 dark:text-orange-400 hover:underline font-medium"
+                    className="text-primary hover:underline font-medium"
                   >
                     Facebook
                   </a>
@@ -106,7 +106,7 @@ export default function ContactPage() {
                   Email
                 </h3>
                 <p className="text-neutral-600 dark:text-neutral-400">
-                  <a href="mailto:hello@snapmealsdaily.com" className="text-orange-600 dark:text-orange-400 hover:underline">
+                  <a href="mailto:hello@snapmealsdaily.com" className="text-primary hover:underline">
                     hello@snapmealsdaily.com
                   </a>
                 </p>
@@ -120,7 +120,7 @@ export default function ContactPage() {
                   For sponsorships, partnerships, or collaborations, please email:
                 </p>
                 <p className="text-neutral-600 dark:text-neutral-400 mt-2">
-                  <a href="mailto:partnerships@snapmealsdaily.com" className="text-orange-600 dark:text-orange-400 hover:underline">
+                  <a href="mailto:partnerships@snapmealsdaily.com" className="text-primary hover:underline">
                     partnerships@snapmealsdaily.com
                   </a>
                 </p>
