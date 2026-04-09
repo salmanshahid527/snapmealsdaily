@@ -7,26 +7,9 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "snapmealsdaily.com",
-      },
-      {
-        protocol: "https",
-        hostname: "www.snapmealsdaily.com",
-      },
-      {
-        protocol: "https",
-        hostname: "api.snapmealsdaily.com",
-      },
-      {
-        protocol: "https",
-        hostname: "secure.gravatar.com",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
+      // Allow any HTTPS image domain (WordPress, CDNs, Unsplash, Gravatar, etc.)
+      { protocol: "https", hostname: "**" },
+      { protocol: "http", hostname: "**" },
     ],
   },
   rewrites: async () => {
