@@ -1,52 +1,54 @@
 @import "tailwindcss";
 
-/* ─── SnapMealsDaily — warm tomato-red, cream surfaces, editorial food magazine ─ */
+/* ─── SnapMealsDaily — deep teal + warm amber, editorial food magazine ─────── */
 :root {
-  /* Surfaces — warm cream, food-forward */
-  --background:           #fffdf9;
-  --background-alt:       #fff8f0;
+  /* Surfaces */
+  --background:           #f7fafa;
+  --background-alt:       #e8f5f3;
   --card:                 #ffffff;
-  --card-foreground:      #1a1006;
+  --card-foreground:      #0a1f1e;
   --popover:              #ffffff;
-  --popover-foreground:   #1a1006;
-  --surface-warm:         #fff3e8;
+  --popover-foreground:   #0a1f1e;
+  --surface-warm:         #fef9ec;
+  --surface-dark:         #042f2e;
+  --surface-mid:          #134e4a;
 
   /* Text */
-  --foreground:           #1a1006;
-  --foreground-muted:     #5c4a36;
-  --foreground-subtle:    #9c8874;
+  --foreground:           #0a1f1e;
+  --foreground-muted:     #2d6b65;
+  --foreground-subtle:    #6b9e9a;
 
-  /* Brand — vivid tomato / chili red */
-  --primary:              #e85d1a;
+  /* Brand — teal jade */
+  --primary:              #0d9488;
   --primary-foreground:   #ffffff;
-  --primary-muted:        #fff0e8;
-  --primary-hover:        #c94d14;
+  --primary-muted:        #ccfbf1;
+  --primary-hover:        #0a7a6e;
 
   /* Amber accent */
-  --accent:               #d97706;
-  --accent-foreground:    #92400e;
+  --accent:               #f59e0b;
+  --accent-foreground:    #78350f;
   --accent-muted:         #fef3c7;
 
-  /* Secondary — warm dark */
-  --secondary:            #2d1f12;
-  --secondary-foreground: #fff8f0;
+  /* Secondary — very dark teal */
+  --secondary:            #042f2e;
+  --secondary-foreground: #e6f7f6;
 
-  --muted:                #f5ede3;
-  --muted-foreground:     #9c8874;
+  --muted:                #d1f0ec;
+  --muted-foreground:     #6b9e9a;
 
   --destructive:          hsl(0 72% 50%);
   --destructive-foreground: hsl(0 0% 98%);
 
-  --border:               #e8d9c8;
-  --input:                #e8d9c8;
-  --ring:                 #e85d1a;
+  --border:               #b2dfdb;
+  --input:                #b2dfdb;
+  --ring:                 #0d9488;
   --radius:               0.625rem;
   --section-gap:          4rem;
 
-  --shadow-sm:    0 2px 8px rgba(60,30,10,0.07);
-  --shadow-md:    0 8px 24px rgba(60,30,10,0.10);
-  --shadow-lg:    0 20px 48px rgba(60,30,10,0.13);
-  --shadow-brand: 0 4px 20px rgba(232,93,26,0.32);
+  --shadow-sm:    0 2px 8px rgba(13,148,136,0.08);
+  --shadow-md:    0 8px 24px rgba(13,148,136,0.12);
+  --shadow-lg:    0 20px 48px rgba(13,148,136,0.15);
+  --shadow-brand: 0 4px 20px rgba(13,148,136,0.35);
 }
 
 @media (min-width: 768px) {
@@ -54,36 +56,38 @@
 }
 
 .dark {
-  --background:           #160e05;
-  --background-alt:       #1e1409;
-  --card:                 #26190d;
-  --card-foreground:      #f5ede3;
-  --popover:              #26190d;
-  --popover-foreground:   #f5ede3;
-  --surface-warm:         #2e1f10;
+  --background:           #061a19;
+  --background-alt:       #0a2422;
+  --card:                 #0f2e2c;
+  --card-foreground:      #e6f7f6;
+  --popover:              #0f2e2c;
+  --popover-foreground:   #e6f7f6;
+  --surface-warm:         #1a1a08;
+  --surface-dark:         #020f0f;
+  --surface-mid:          #0d3330;
 
-  --foreground:           #f5ede3;
-  --foreground-muted:     #c4a882;
-  --foreground-subtle:    #8a7060;
+  --foreground:           #e6f7f6;
+  --foreground-muted:     #7ecec8;
+  --foreground-subtle:    #4d9994;
 
-  --primary:              #f07040;
-  --primary-foreground:   #ffffff;
-  --primary-muted:        #3d1a08;
-  --primary-hover:        #e85d1a;
+  --primary:              #2dd4bf;
+  --primary-foreground:   #042f2e;
+  --primary-muted:        #063832;
+  --primary-hover:        #14b8a6;
 
-  --accent:               #f59e0b;
+  --accent:               #fbbf24;
   --accent-foreground:    #fde68a;
-  --accent-muted:         #3d2a00;
+  --accent-muted:         #2d1a00;
 
-  --secondary:            #4a3520;
-  --secondary-foreground: #f5ede3;
+  --secondary:            #164745;
+  --secondary-foreground: #e6f7f6;
 
-  --muted:                #2e1f10;
-  --muted-foreground:     #9c8874;
+  --muted:                #0f2e2c;
+  --muted-foreground:     #4d9994;
 
-  --border:               #3d2a18;
-  --input:                #3d2a18;
-  --ring:                 #f07040;
+  --border:               #164745;
+  --input:                #164745;
+  --ring:                 #2dd4bf;
 }
 
 @theme inline {
@@ -94,6 +98,8 @@
   --color-popover:              var(--popover);
   --color-popover-foreground:   var(--popover-foreground);
   --color-surface-warm:         var(--surface-warm);
+  --color-surface-dark:         var(--surface-dark);
+  --color-surface-mid:          var(--surface-mid);
   --color-foreground:           var(--foreground);
   --color-foreground-muted:     var(--foreground-muted);
   --color-foreground-subtle:    var(--foreground-subtle);
@@ -180,8 +186,23 @@ body {
   font-family: var(--font-sans);
 }
 
-/* ─── Gradient & decorative ──────────────────────────────────────────────── */
+/* ─── Section background helpers ─────────────────────────────────────────── */
+.section-dark {
+  background: var(--surface-dark);
+  color: var(--secondary-foreground);
+}
+.section-mid {
+  background: var(--surface-mid);
+  color: var(--secondary-foreground);
+}
+.section-mint {
+  background: var(--background-alt);
+}
+.section-warm {
+  background: var(--surface-warm);
+}
 
+/* ─── Gradient utilities ──────────────────────────────────────────────────── */
 .gradient-brand {
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   -webkit-background-clip: text;
@@ -204,8 +225,13 @@ body {
   font-family: var(--font-sans);
 }
 
-/* ─── Article / Prose ────────────────────────────────────────────────────── */
+/* ─── Header accent line ──────────────────────────────────────────────────── */
+.header-accent-bar {
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  height: 3px;
+}
 
+/* ─── Article / Prose ────────────────────────────────────────────────────── */
 .prose-cozy {
   max-width: none;
   color: var(--foreground);
@@ -306,30 +332,4 @@ body {
   background: var(--background-alt);
 }
 
-/* ─── FAQ accordion (matching easybeautyhacks) ───────────────────────────── */
-.faq-item {
-  border-bottom: 1px solid var(--border);
-  padding: 1rem 0;
-}
-.faq-question {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-.faq-answer {
-  margin-top: 0.75rem;
-  color: var(--foreground-muted);
-  line-height: 1.7;
-}
-
-/* ─── Header category bar accent ─────────────────────────────────────────── */
-.header-accent-bar {
-  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
-  height: 3px;
-}
-
-html.dark body { background-color: #160e05; }
+html.dark body { background-color: #061a19; }

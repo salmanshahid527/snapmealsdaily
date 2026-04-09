@@ -41,7 +41,7 @@ export function SiteHeader({
           : "bg-card border-b border-border"
       )}
     >
-      {/* Gradient accent line at very top */}
+      {/* Teal → Amber gradient accent line */}
       <div className="header-accent-bar" />
 
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
@@ -76,7 +76,6 @@ export function SiteHeader({
             <Link
               href="/search"
               className="p-2 rounded-lg text-foreground-muted hover:text-primary transition-colors"
-              style={{ "--hover-bg": "var(--primary-muted)" } as React.CSSProperties}
               aria-label="Search"
             >
               <Search size={18} />
@@ -103,11 +102,14 @@ export function SiteHeader({
         </div>
       </div>
 
-      {/* Category sub-bar */}
+      {/* Category sub-bar — teal tinted */}
       {categories.length > 0 && (
         <div
-          className="hidden lg:block border-t border-border"
-          style={{ background: "var(--background-alt)" }}
+          className="hidden lg:block border-t"
+          style={{
+            background: "var(--background-alt)",
+            borderColor: "var(--border)",
+          }}
         >
           <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-6 h-10 overflow-x-auto scrollbar-hide">
@@ -115,7 +117,8 @@ export function SiteHeader({
                 <Link
                   key={cat._id}
                   href={`/category/${cat.slug}`}
-                  className="shrink-0 text-xs font-semibold text-foreground-subtle hover:text-primary transition-colors nav-link whitespace-nowrap"
+                  className="shrink-0 text-xs font-bold nav-link whitespace-nowrap transition-colors hover:text-primary"
+                  style={{ color: "var(--foreground-subtle)" }}
                 >
                   {cat.title}
                 </Link>

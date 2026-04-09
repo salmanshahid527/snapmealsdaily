@@ -13,14 +13,15 @@ export function Footer({ initialCategories }: FooterProps) {
   const categories = initialCategories ?? [];
 
   return (
+    /* Very dark teal footer — continues the dark palette rhythm */
     <footer
       className="pt-14 pb-6 mt-auto"
-      style={{ background: "var(--secondary)", color: "var(--secondary-foreground)" }}
+      style={{ background: "#020f0f" }}
     >
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-        {/* Top gradient accent */}
+        {/* Top teal→amber gradient accent */}
         <div
-          className="h-1 rounded-full mb-10 opacity-60"
+          className="h-[2px] rounded-full mb-10"
           style={{
             background:
               "linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%)",
@@ -39,8 +40,8 @@ export function Footer({ initialCategories }: FooterProps) {
               />
             </Link>
             <p
-              className="text-sm leading-relaxed mb-4 opacity-70"
-              style={{ color: "var(--secondary-foreground)" }}
+              className="text-sm leading-relaxed mb-4"
+              style={{ color: "rgba(230,247,246,0.55)" }}
             >
               Fresh recipes, smart meal ideas, and kitchen inspiration — snap,
               cook, and share.
@@ -51,8 +52,11 @@ export function Footer({ initialCategories }: FooterProps) {
                   href={SOCIAL.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg transition-colors opacity-70 hover:opacity-100"
-                  style={{ background: "rgba(255,255,255,0.08)" }}
+                  className="p-2 rounded-lg transition-colors"
+                  style={{
+                    background: "rgba(13,148,136,0.2)",
+                    color: "#5eead4",
+                  }}
                   aria-label="Instagram"
                 >
                   <Instagram size={15} />
@@ -63,8 +67,11 @@ export function Footer({ initialCategories }: FooterProps) {
                   href={SOCIAL.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg transition-colors opacity-70 hover:opacity-100"
-                  style={{ background: "rgba(255,255,255,0.08)" }}
+                  className="p-2 rounded-lg transition-colors"
+                  style={{
+                    background: "rgba(13,148,136,0.2)",
+                    color: "#5eead4",
+                  }}
                   aria-label="Facebook"
                 >
                   <Facebook size={15} />
@@ -75,8 +82,11 @@ export function Footer({ initialCategories }: FooterProps) {
                   href={SOCIAL.pinterest}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-lg transition-colors opacity-70 hover:opacity-100"
-                  style={{ background: "rgba(255,255,255,0.08)" }}
+                  className="p-2 rounded-lg transition-colors"
+                  style={{
+                    background: "rgba(13,148,136,0.2)",
+                    color: "#5eead4",
+                  }}
                   aria-label="Pinterest"
                 >
                   <ExternalLink size={15} />
@@ -88,14 +98,19 @@ export function Footer({ initialCategories }: FooterProps) {
           {/* Categories */}
           {categories.length > 0 && (
             <div>
-              <h3 className="overline mb-4 opacity-50">Categories</h3>
+              <h3
+                className="overline mb-4"
+                style={{ color: "rgba(230,247,246,0.35)" }}
+              >
+                Categories
+              </h3>
               <ul className="space-y-2.5">
                 {categories.slice(0, 6).map((cat) => (
                   <li key={cat._id}>
                     <Link
                       href={`/category/${cat.slug}`}
-                      className="text-sm opacity-70 hover:opacity-100 transition-opacity"
-                      style={{ color: "var(--secondary-foreground)" }}
+                      className="text-sm transition-colors hover:text-primary"
+                      style={{ color: "rgba(230,247,246,0.6)" }}
                     >
                       {cat.title}
                     </Link>
@@ -107,7 +122,12 @@ export function Footer({ initialCategories }: FooterProps) {
 
           {/* Explore */}
           <div>
-            <h3 className="overline mb-4 opacity-50">Explore</h3>
+            <h3
+              className="overline mb-4"
+              style={{ color: "rgba(230,247,246,0.35)" }}
+            >
+              Explore
+            </h3>
             <ul className="space-y-2.5">
               {[
                 { label: "Home", href: "/" },
@@ -118,8 +138,8 @@ export function Footer({ initialCategories }: FooterProps) {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm opacity-70 hover:opacity-100 transition-opacity"
-                    style={{ color: "var(--secondary-foreground)" }}
+                    className="text-sm transition-colors hover:text-primary"
+                    style={{ color: "rgba(230,247,246,0.6)" }}
                   >
                     {link.label}
                   </Link>
@@ -130,8 +150,16 @@ export function Footer({ initialCategories }: FooterProps) {
 
           {/* Newsletter */}
           <div>
-            <h3 className="overline mb-4 opacity-50">Newsletter</h3>
-            <p className="text-sm opacity-60 mb-3 leading-relaxed">
+            <h3
+              className="overline mb-4"
+              style={{ color: "rgba(230,247,246,0.35)" }}
+            >
+              Newsletter
+            </h3>
+            <p
+              className="text-sm mb-3 leading-relaxed"
+              style={{ color: "rgba(230,247,246,0.5)" }}
+            >
               New recipes each week. No spam — just flavour.
             </p>
             <form
@@ -141,19 +169,19 @@ export function Footer({ initialCategories }: FooterProps) {
               <input
                 type="email"
                 placeholder="your@email.com"
-                className="w-full px-3 py-2 rounded-lg text-sm placeholder-opacity-40 focus:outline-none transition-colors"
+                className="w-full px-3 py-2 rounded-lg text-sm focus:outline-none transition-colors"
                 style={{
-                  background: "rgba(255,255,255,0.08)",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  color: "var(--secondary-foreground)",
+                  background: "rgba(13,148,136,0.15)",
+                  border: "1px solid rgba(13,148,136,0.3)",
+                  color: "rgba(230,247,246,0.85)",
                 }}
               />
               <button
                 type="submit"
-                className="w-full py-2 rounded-lg text-sm font-semibold transition-colors"
+                className="w-full py-2 rounded-lg text-sm font-bold transition-all"
                 style={{
                   background:
-                    "linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)",
+                    "linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%)",
                   color: "#fff",
                 }}
               >
@@ -166,9 +194,12 @@ export function Footer({ initialCategories }: FooterProps) {
         {/* Bottom bar */}
         <div
           className="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-3"
-          style={{ borderColor: "rgba(255,255,255,0.08)" }}
+          style={{ borderColor: "rgba(13,148,136,0.15)" }}
         >
-          <p className="text-xs opacity-40">
+          <p
+            className="text-xs"
+            style={{ color: "rgba(230,247,246,0.3)" }}
+          >
             © {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
           </p>
           <div className="flex gap-4">
@@ -180,8 +211,8 @@ export function Footer({ initialCategories }: FooterProps) {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-xs opacity-40 hover:opacity-70 transition-opacity"
-                style={{ color: "var(--secondary-foreground)" }}
+                className="text-xs transition-colors hover:text-primary"
+                style={{ color: "rgba(230,247,246,0.3)" }}
               >
                 {link.label}
               </Link>

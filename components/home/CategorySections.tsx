@@ -12,6 +12,12 @@ interface CategorySectionsProps {
   postsByCategoryId: Record<number, Post[]>;
 }
 
+/* Alternating tones: light-teal → white → light-teal → white ... */
+const SECTION_STYLES = [
+  { bg: "var(--background)", label: "var(--primary)" },
+  { bg: "var(--background-alt)", label: "var(--primary)" },
+] as const;
+
 export function CategorySections({
   categories,
   postsByCategoryId,
@@ -23,15 +29,16 @@ export function CategorySections({
   if (!catsWithPosts.length) return null;
 
   return (
-    <section className="section-gap bg-background">
+    <div>
       {catsWithPosts.map((cat, sectionIdx) => {
         const posts = postsByCategoryId[cat.id] ?? [];
-        const isEven = sectionIdx % 2 === 0;
+        const style = SECTION_STYLES[sectionIdx % 2];
 
         return (
-          <div
+          <section
             key={cat._id}
-            className={`mb-16 ${isEven ? "" : "bg-background-alt py-12 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 rounded-2xl"}`}
+            className="py-14"
+            style={{ background: style.bg }}
           >
             <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
               <motion.div
@@ -42,14 +49,20 @@ export function CategorySections({
                 className="flex items-end justify-between mb-7"
               >
                 <div>
-                  <p className="overline text-primary mb-1.5">Recipe collection</p>
-                  <h2 className="font-display text-2xl sm:text-3xl font-semibold text-foreground">
+                  <p
+                    className="overline mb-1.5"
+                    style={{ color: style.label }}
+                  >
+                    Recipe collection
+                  </p>
+                  <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground">
                     {cat.title}
                   </h2>
                 </div>
                 <Link
                   href={`/category/${cat.slug}`}
-                  className="flex items-center gap-1.5 text-sm font-medium text-foreground-muted hover:text-primary transition-colors"
+                  className="flex items-center gap-1.5 text-sm font-semibold transition-colors hover:text-primary"
+                  style={{ color: "var(--foreground-muted)" }}
                 >
                   More {cat.title} <ArrowRight size={14} />
                 </Link>
@@ -69,9 +82,9 @@ export function CategorySections({
                 ))}
               </motion.div>
             </div>
-          </div>
+          </section>
         );
       })}
-    </section>
+    </div>
   );
 }

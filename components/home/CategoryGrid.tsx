@@ -20,13 +20,14 @@ const EMOJI_MAP: Record<string, string> = {
   drinks: "🍹",
 };
 
+/* Teal-family gradients — no reds, completely new palette */
 const GRADIENT_PAIRS: [string, string][] = [
-  ["#E85D1A", "#f07a3a"],
-  ["#D97706", "#f59e0b"],
-  ["#c94d14", "#e85d1a"],
-  ["#b45309", "#d97706"],
-  ["#92400e", "#b45309"],
-  ["#7c2d12", "#c2410c"],
+  ["#0d9488", "#14b8a6"],
+  ["#0f766e", "#0d9488"],
+  ["#f59e0b", "#d97706"],
+  ["#134e4a", "#0f766e"],
+  ["#042f2e", "#134e4a"],
+  ["#1e40af", "#1d4ed8"],
 ];
 
 interface CategoryGridProps {
@@ -52,7 +53,7 @@ function CategoryCell({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{
@@ -61,10 +62,10 @@ function CategoryCell({
         ease: [0.22, 1, 0.36, 1],
       }}
       className="relative overflow-hidden rounded-2xl group cursor-pointer"
-      style={{ minHeight: "220px" }}
+      style={{ minHeight: "228px" }}
     >
       <Link href={href} className="block h-full">
-        <div className="relative w-full h-full" style={{ minHeight: "220px" }}>
+        <div className="relative w-full h-full" style={{ minHeight: "228px" }}>
           {imageUrl ? (
             <Image
               src={imageUrl}
@@ -82,21 +83,31 @@ function CategoryCell({
             />
           )}
 
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent group-hover:from-black/85 transition-all duration-300" />
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent group-hover:from-black/85 transition-all duration-300" />
 
-          {/* Emoji top-right (only when no image) */}
+          {/* Emoji (no-image only) */}
           {!imageUrl && (
-            <div className="absolute top-4 right-4 text-3xl opacity-80 group-hover:scale-110 transition-transform duration-300">
+            <div className="absolute top-4 right-4 text-3xl opacity-75 group-hover:scale-110 transition-transform duration-300 select-none">
               {emoji}
             </div>
           )}
 
+          {/* Teal left accent bar */}
+          <div
+            className="absolute left-0 top-0 bottom-0 w-1 opacity-80 group-hover:opacity-100 transition-opacity"
+            style={{ background: "var(--primary)" }}
+          />
+
           {/* Content */}
           <div className="absolute bottom-0 left-0 right-0 p-5">
             {category?.count != null && (
-              <p className="overline text-white/65 mb-1">
-                {category.count} {category.count === 1 ? "recipe" : "recipes"}
+              <p
+                className="overline mb-1"
+                style={{ color: "rgba(94,234,212,0.8)" }}
+              >
+                {category.count}{" "}
+                {category.count === 1 ? "recipe" : "recipes"}
               </p>
             )}
             <div className="flex items-end justify-between gap-2">
@@ -104,10 +115,10 @@ function CategoryCell({
                 {label}
               </h3>
               <span
-                className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 transition-all duration-300"
-                style={{ background: "var(--primary)" }}
+                className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300"
+                style={{ background: "var(--accent)" }}
               >
-                <ArrowRight size={14} className="text-white" />
+                <ArrowRight size={14} style={{ color: "var(--accent-foreground)" }} />
               </span>
             </div>
           </div>
@@ -124,7 +135,8 @@ export function CategoryGrid({
   const cats = categories.slice(0, 5);
 
   return (
-    <section className="py-16" style={{ background: "var(--background-alt)" }}>
+    /* Light mint/teal background — contrast to dark hero above */
+    <section className="py-16 section-mint">
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between mb-8">
           <div>
@@ -137,14 +149,13 @@ export function CategoryGrid({
           </div>
           <Link
             href="/blog"
-            className="hidden sm:flex items-center gap-1.5 text-sm font-semibold transition-colors"
+            className="hidden sm:flex items-center gap-1.5 text-sm font-semibold transition-colors hover:text-primary"
             style={{ color: "var(--foreground-muted)" }}
           >
             All recipes <ArrowRight size={14} />
           </Link>
         </div>
 
-        {/* Bento-style grid: first 2 taller, rest shorter */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {cats.map((cat, idx) => (
             <CategoryCell
@@ -156,9 +167,8 @@ export function CategoryGrid({
               index={idx}
             />
           ))}
-          {/* "View all" tile */}
           <CategoryCell
-            gradientPair={["#2d1f12", "#4a3520"]}
+            gradientPair={["#042f2e", "#0f766e"]}
             emoji="🍽️"
             index={cats.length}
           />
