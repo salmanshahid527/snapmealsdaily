@@ -1,9 +1,33 @@
+function decodeNumericHtmlEntities(text: string): string {
+  return text
+    .replace(/&amp;#(\d{1,7});/g, "&#$1;")
+    .replace(/&amp;#x([0-9a-f]{1,6});/gi, "&#x$1;")
+    .replace(/&#(\d{1,7});/g, (_, dec) => {
+      const n = Number.parseInt(dec, 10);
+      if (!Number.isFinite(n) || n < 1 || n > 0x10ffff) return _;
+      try {
+        return String.fromCodePoint(n);
+      } catch {
+        return _;
+      }
+    })
+    .replace(/&#x([0-9a-f]{1,6});/gi, (_, hex) => {
+      const n = Number.parseInt(hex, 16);
+      if (!Number.isFinite(n) || n < 1 || n > 0x10ffff) return _;
+      try {
+        return String.fromCodePoint(n);
+      } catch {
+        return _;
+      }
+    });
+}
+
 /**
  * Decode HTML entities
  */
 export function decodeHtmlEntities(text: string | undefined): string {
-  if (!text || typeof text !== 'string') return '';
-  
+  if (!text || typeof text !== "string") return "";
+
   const map: Record<string, string> = {
     "&amp;": "&",
     "&lt;": "<",
@@ -21,7 +45,8 @@ export function decodeHtmlEntities(text: string | undefined): string {
     "\u2013": "\u2013",
     "\u2014": "\u2014",
   };
-  return text.replace(/&[a-z]+;/gi, (entity) => map[entity] || entity);
+  const named = text.replace(/&[a-z]+;/gi, (entity) => map[entity] || entity);
+  return decodeNumericHtmlEntities(named);
 }
 
 /**
