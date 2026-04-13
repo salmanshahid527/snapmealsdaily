@@ -3,14 +3,16 @@ import type { PostDetail } from "@/types";
 
 interface ArticleJsonLdProps {
   post: PostDetail;
+  /** Resolved SEO description (e.g. Rank Math); defaults to excerpt. */
+  description?: string;
 }
 
-export function ArticleJsonLd({ post }: ArticleJsonLdProps) {
+export function ArticleJsonLd({ post, description }: ArticleJsonLdProps) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
-    description: post.excerpt,
+    description: description ?? post.excerpt,
     image: post.featuredImage?.split("?")[0],
     datePublished: post.publishedAt,
     dateModified: post.modifiedAt || post.publishedAt,
