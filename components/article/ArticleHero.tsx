@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
+import { SmartImage as Image } from "@/components/ui/SmartImage";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Calendar, Clock, ChevronRight } from "lucide-react";
