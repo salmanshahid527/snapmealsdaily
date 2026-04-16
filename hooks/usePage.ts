@@ -5,6 +5,7 @@ import { Page } from "@/types";
 import { fetchWpClient } from "@/lib/wp/client";
 import { WpPage } from "@/lib/wp/types";
 import { processPostBody } from "@/lib/html";
+import { isHeadlessExcludedWpPageSlug } from "@/lib/wp/excludedPublicWpPages";
 
 /**
  * Fetch single page by slug
@@ -17,6 +18,7 @@ export function usePage(
     queryKey: ["page", slug],
     queryFn: async () => {
       if (!slug) return null;
+      if (isHeadlessExcludedWpPageSlug(slug)) return null;
       const pages = await fetchWpClient<WpPage[]>("/pages", {
         slug,
         number: 1,
@@ -32,7 +34,7 @@ export function usePage(
         excerpt: page.excerpt.rendered,
       };
     },
-    enabled: !!slug,
+    enabled: !!slug && !isHeadlessExcludedWpPageSlug(slug),
     staleTime: initialData ? Infinity : 2 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
     initialData: initialData || undefined,

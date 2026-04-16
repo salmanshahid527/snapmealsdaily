@@ -4,12 +4,15 @@ import { fetchWp, fetchWpPaginated } from "./client";
 import { WpPage } from "./types";
 import { SLUG_FALLBACKS } from "@/lib/constants";
 import { processPostBody } from "@/lib/html";
+import { isHeadlessExcludedWpPageSlug } from "./excludedPublicWpPages";
 
 /**
  * Get single page by slug with fallback slugs
  */
 export const getPageBySlug = cache(
   async (slug: string): Promise<Page | null> => {
+    if (isHeadlessExcludedWpPageSlug(slug)) return null;
+
     // Try primary slug first
     let pages = await fetchWp<WpPage[]>("/pages", {
       slug,
@@ -21,6 +24,7 @@ export const getPageBySlug = cache(
       const fallbacks = SLUG_FALLBACKS[slug] || [];
 
       for (const fallback of fallbacks) {
+        if (isHeadlessExcludedWpPageSlug(fallback)) continue;
         pages = await fetchWp<WpPage[]>("/pages", {
           slug: fallback,
           number: 1,
@@ -90,9 +94,11 @@ export async function getAllPagesForSitemap(): Promise<
 
     if (data) {
       data.forEach((p) => {
-        items.push({
-          slug: p.slug,
-        });
+        if (p.slug && !isHeadlessExcludedWpPageSlug(p.slug)) {
+          items.push({
+            slug: p.slug,
+          });
+        }
       });
     }
 
