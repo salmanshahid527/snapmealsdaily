@@ -15,7 +15,7 @@ import { buildPostMetadata } from "@/lib/seo";
 import { fetchRankMathDescription } from "@/lib/wp/rankmath";
 import { SITE_NAME, SITE_URL, DEFAULT_OG_IMAGE, SLUG_TO_PATH } from "@/lib/constants";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 /** Avoid duplicate static params for routes that already exist under `app/`. */
 const RESERVED_FOR_STATIC_PARAMS = new Set([

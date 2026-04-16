@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname),
   },
   images: {
+    /** Bypass Vercel Image Optimization transforms (Hobby quota); WP/CDN serve sized assets */
+    unoptimized: true,
     remotePatterns: [
       // Allow any HTTPS image domain (WordPress, CDNs, Unsplash, Gravatar, etc.)
       { protocol: "https", hostname: "**" },

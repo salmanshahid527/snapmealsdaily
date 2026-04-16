@@ -24,7 +24,7 @@ export async function fetchWp<T>(
   }
 
   const res = await fetch(url.toString(), {
-    next: { revalidate: 60 },
+    next: { revalidate: 3600 },
     headers: { "Content-Type": "application/json" },
   });
 
