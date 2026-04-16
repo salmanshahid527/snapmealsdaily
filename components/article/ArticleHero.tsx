@@ -1,9 +1,7 @@
 "use client";
 
-import { useRef } from "react";
 import { SmartImage as Image } from "@/components/ui/SmartImage";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { Calendar, Clock, ChevronRight } from "lucide-react";
 import { formatDateTimeShort, readTime } from "@/lib/utils";
 import type { PostDetail } from "@/types";
@@ -13,17 +11,10 @@ interface ArticleHeroProps {
 }
 
 export function ArticleHero({ post }: ArticleHeroProps) {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-
   return (
-    <section ref={ref} className="relative overflow-hidden">
+    <section className="relative overflow-hidden">
       <div className="relative h-[50vh] sm:h-[60vh] overflow-hidden">
-        <motion.div style={{ y: imgY }} className="absolute inset-0 scale-110">
+        <div className="absolute inset-0">
           {post.featuredImage ? (
             <Image
               src={post.featuredImage}
@@ -36,7 +27,7 @@ export function ArticleHero({ post }: ArticleHeroProps) {
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-primary-muted to-muted" />
           )}
-        </motion.div>
+        </div>
 
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
       </div>

@@ -3,8 +3,27 @@ import { ArrowRight, Clock } from "lucide-react";
 import { SmartImage as Image } from "@/components/ui/SmartImage";
 import type { Post } from "@/types";
 
+function isUnsplashUrl(src: string): boolean {
+  return src.includes("images.unsplash.com");
+}
+
+/** Smaller Unsplash params + skip optimizer hop for faster mobile LCP. */
+function tightenUnsplashHeroUrl(src: string): string {
+  if (!isUnsplashUrl(src)) return src;
+  try {
+    const u = new URL(src);
+    u.searchParams.set("w", "1200");
+    u.searchParams.set("q", "72");
+    u.searchParams.set("auto", "format");
+    u.searchParams.set("fit", "crop");
+    return u.toString();
+  } catch {
+    return src;
+  }
+}
+
 const HERO_BG =
-  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&q=85&auto=format&fit=crop";
+  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=72&auto=format&fit=crop";
 
 interface HeroParallaxProps {
   featuredPosts: Post[];
@@ -14,15 +33,18 @@ export function HeroParallax({ featuredPosts }: HeroParallaxProps) {
   const featured = featuredPosts.find((post) => post.featuredImage);
   const heroBg = featured?.featuredImage ?? HERO_BG;
   const heroAlt = featured?.title ?? "Fresh recipe inspiration";
+  const heroSrc = tightenUnsplashHeroUrl(heroBg);
+  const heroUnoptimized = isUnsplashUrl(heroBg);
 
   return (
     <section className="relative flex min-h-[78vh] items-stretch overflow-hidden bg-[#042f2e]">
       <div className="absolute inset-0">
         <Image
-          src={heroBg}
+          src={heroSrc}
           alt={heroAlt}
           fill
           priority
+          unoptimized={heroUnoptimized}
           className="object-cover object-center"
           sizes="100vw"
         />
