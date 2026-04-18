@@ -94,7 +94,8 @@ export default async function RootLayout({
     getCategories(),
   ]);
 
-  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "";
+  const gaId =
+    process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || "G-QKG4B4H7M4";
   const wpUrl = process.env.NEXT_PUBLIC_API_URL ?? "";
   let wpOrigin: string | null = null;
   try {
@@ -116,21 +117,24 @@ export default async function RootLayout({
           crossOrigin="anonymous"
         />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
       </head>
       <body
         className={`${playfairDisplay.variable} ${nunitoSans.variable} antialiased min-h-screen flex flex-col`}
       >
-        {gaId && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-              strategy="lazyOnload"
-            />
-            <Script id="google-analytics" strategy="lazyOnload">
-              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gaId}');`}
-            </Script>
-          </>
-        )}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+          strategy="lazyOnload"
+        />
+        <Script id="google-analytics" strategy="lazyOnload">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gaId}');
+          `}
+        </Script>
         <OrganizationWebSiteJsonLd />
         <Providers>
           <SiteHeader
