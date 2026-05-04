@@ -67,11 +67,7 @@ export function ArticleHero({ post }: ArticleHeroProps) {
           {post.title}
         </h1>
 
-        {post.excerpt && (
-          <p className="text-foreground-muted text-lg leading-relaxed mb-6">
-            {post.excerpt}
-          </p>
-        )}
+      
 
         <div className="flex flex-wrap items-center gap-4 text-sm text-foreground-muted pb-6 border-b border-border">
           {post.author && (
@@ -83,10 +79,7 @@ export function ArticleHero({ post }: ArticleHeroProps) {
               {formatDateTimeShort(post.publishedAt)}
             </time>
           </div>
-          <div className="flex items-center gap-1.5">
-            <Clock size={14} />
-            {readTime(post.body)}
-          </div>
+          
         </div>
       </div>
     </section>

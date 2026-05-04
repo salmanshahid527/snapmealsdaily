@@ -11,6 +11,10 @@ export const getNavLinks = async (): Promise<NavLink[]> => {
   const staticLinks: NavLink[] = [
     { label: "Home", href: "/" },
     { label: "Blog", href: "/blog" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" }, 
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Disclaimer", href: "/disclaimer" },
   ];
 
   const pages = await fetchWp<WpPage[]>("/pages", {

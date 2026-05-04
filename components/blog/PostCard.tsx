@@ -62,19 +62,7 @@ export function PostCard({
             </span>
           )}
 
-          {/* Read time */}
-          {post.excerpt && (
-            <span
-              className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-sm"
-              style={{
-                background: "rgba(255,255,255,0.92)",
-                color: "var(--foreground-muted)",
-              }}
-            >
-              <Clock size={10} />
-              {readTime(post.excerpt)}
-            </span>
-          )}
+          
         </div>
       </Link>
 
