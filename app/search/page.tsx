@@ -4,6 +4,7 @@ import { Container } from "@/components/layout/Container";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: true },
   title: "Search Recipes — SnapMealsDaily",
   description: "Search for your favorite recipes on SnapMealsDaily",
   alternates: { canonical: `${SITE_URL}/search` },
