@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
+export const revalidate = 43200;
+
 export const metadata: Metadata = {
   title: `Disclaimer — ${SITE_NAME}`,
   description: "Legal disclaimer for SnapMealsDaily",

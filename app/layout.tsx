@@ -15,6 +15,8 @@ import {
   DEFAULT_OG_IMAGE,
 } from "@/lib/constants";
 
+export const revalidate = 43200;
+
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],

@@ -24,7 +24,7 @@ export async function fetchWp<T>(
   }
 
   const res = await fetch(url.toString(), {
-    next: { revalidate: 3600 },
+    next: { revalidate: 43200 },
     headers: { "Content-Type": "application/json" },
   });
 
@@ -58,7 +58,7 @@ export async function fetchWpPaginated<T>(
   }
 
   const res = await fetch(url.toString(), {
-    next: { revalidate: 3600 },
+    next: { revalidate: 43200 },
     headers: { "Content-Type": "application/json" },
   });
 

@@ -1,3 +1,5 @@
+export const revalidate = 43200;
+
 export const metadata = {
   title: "Contact Us | SnapMealsDaily",
   description: "Get in touch with SnapMealsDaily. We'd love to hear from you!",

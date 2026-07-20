@@ -9,7 +9,7 @@ import {
   POSTS_PER_CATEGORY_HOME,
 } from "@/lib/constants";
 
-export const revalidate = 3600;
+export const revalidate = 43200;
 
 export const metadata: Metadata = {
   title: `${SITE_NAME} — Recipes & Food Inspiration`,

@@ -4,7 +4,7 @@ import { getCategories } from "@/lib/wp/categories";
 import { getAllPagesForSitemap } from "@/lib/wp/pages";
 import { SITE_URL, SLUG_TO_PATH } from "@/lib/constants";
 
-export const revalidate = 3600;
+export const revalidate = 43200;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [posts, categories, wpPages] = await Promise.all([
