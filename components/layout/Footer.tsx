@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SITE_NAME, SOCIAL } from "@/lib/constants";
 import type { Category } from "@/types";
 import { Instagram, Facebook, ExternalLink } from "lucide-react";
+import Smartlink from "@/components/ads/Smartlink";
 
 interface FooterProps {
   initialCategories?: Category[];
@@ -219,6 +220,7 @@ export function Footer({ initialCategories }: FooterProps) {
                 {link.label}
               </Link>
             ))}
+            <Smartlink />
           </div>
         </div>
       </div>
