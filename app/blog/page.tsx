@@ -4,6 +4,7 @@ import { getLatestPostForBlogMeta, getPostsForBlogPage } from "@/lib/wp/post";
 import { getCategories } from "@/lib/wp/categories";
 import { BlogPostList } from "@/components/blog/BlogPostList";
 import { Container } from "@/components/layout/Container";
+import AdUnit from "@/components/ads/AdUnit";
 import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from "@/lib/constants";
 import { buildOgImage } from "@/lib/seo";
 
@@ -73,6 +74,11 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             Weeknight dinners, weekend brunches, desserts, and everything in
             between — find your next favourite meal.
           </p>
+        </div>
+
+        <div className="mb-8 flex justify-center">
+          <AdUnit type="leaderboard" className="hidden md:block" />
+          <AdUnit type="mobileBanner" className="md:hidden" />
         </div>
 
         <BlogPostList

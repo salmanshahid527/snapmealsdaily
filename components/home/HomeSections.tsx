@@ -2,6 +2,7 @@ import { HeroParallax } from "./HeroParallax";
 import { CategoryGrid } from "./CategoryGrid";
 import { FeaturedPosts } from "./FeaturedPosts";
 import { CategorySections } from "./CategorySections";
+import AdUnit from "@/components/ads/AdUnit";
 import type { Post, Category } from "@/types";
 
 interface HomeSectionsProps {
@@ -26,8 +27,13 @@ export function HomeSections({ initialData }: HomeSectionsProps) {
   return (
     <>
       <HeroParallax featuredPosts={featuredPosts} />
+      <div className="my-4 flex justify-center">
+        <AdUnit type="leaderboard" className="hidden md:block" />
+        <AdUnit type="mobileBanner" className="md:hidden" />
+      </div>
       <CategoryGrid categories={categories} postImages={postImages} />
       <FeaturedPosts posts={featuredPosts} />
+      <AdUnit type="nativeBanner" className="my-6" />
       <CategorySections
         categories={categories}
         postsByCategoryId={postsByCategoryId}
