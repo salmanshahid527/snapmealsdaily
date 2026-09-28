@@ -14,7 +14,6 @@ import {
   SITE_URL,
   DEFAULT_OG_IMAGE,
 } from "@/lib/constants";
-import AdsterraGlobalScripts from "@/components/ads/AdsterraGlobalScripts";
 
 export const revalidate = 43200;
 const playfairDisplay = Playfair_Display({
@@ -148,7 +147,6 @@ export default async function RootLayout({
             initialCategories={initialCategories}
           />
           <main className="flex-1 w-full overflow-x-hidden">{children}</main>
-          <AdsterraGlobalScripts />
           <Footer initialCategories={initialCategories} />
         </Providers>
       </body>
