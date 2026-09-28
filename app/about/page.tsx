@@ -1,7 +1,7 @@
 export const revalidate = 43200;
 
 export const metadata = {
-  title: "About Us | SnapMealsDaily",
+  title: "About Us",
   description: "Learn about SnapMealsDaily and our mission to inspire delicious, easy recipes.",
 };
 
