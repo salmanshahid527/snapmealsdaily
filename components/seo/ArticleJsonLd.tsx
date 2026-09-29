@@ -21,6 +21,7 @@ export function ArticleJsonLd({ post, description }: ArticleJsonLdProps) {
           "@type": "Person",
           name: post.author.name,
           image: post.author.image,
+          url: `${SITE_URL}/about`,
         }
       : undefined,
     publisher: {

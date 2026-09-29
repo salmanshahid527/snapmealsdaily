@@ -14,7 +14,6 @@ import { BreadcrumbJsonLd } from "@/components/seo/BreadcrumbJsonLd";
 import { buildPostMetadata } from "@/lib/seo";
 import { fetchRankMathDescription } from "@/lib/wp/rankmath";
 import { SITE_NAME, SITE_URL, DEFAULT_OG_IMAGE, SLUG_TO_PATH } from "@/lib/constants";
-import AdUnit from "@/components/ads/AdUnit";
 
 export const revalidate = 43200;
 
@@ -165,9 +164,6 @@ export default async function SlugPage({ params }: Props) {
             {/* Article body */}
             {post.body && <ArticleBody html={post.body} />}
 
-            {/* Ad unit */}
-            <AdUnit type="mediumRect" className="my-4 flex justify-center" />
-
             {/* Author card */}
             {author && <AuthorCard author={author} />}
           </article>
@@ -180,7 +176,6 @@ export default async function SlugPage({ params }: Props) {
           <Container>
             <RelatedPosts posts={relatedPosts} />
           </Container>
-           <AdUnit type="nativeBanner" className="my-6" />
         </div>
       )}   
        </>

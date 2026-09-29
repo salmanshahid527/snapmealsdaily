@@ -6,8 +6,10 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/api/revalidate-all",
+      // Internal search result pages are thin/duplicate content; keep them out of the index.
+      disallow: ["/api/revalidate-all", "/search$", "/search?", "/search/"],
     },
     host: new URL(SITE_URL).host,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

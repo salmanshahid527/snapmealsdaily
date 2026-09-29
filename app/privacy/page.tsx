@@ -1,7 +1,7 @@
 export const revalidate = 43200;
 
 export const metadata = {
-  title: "Privacy Policy | SnapMealsDaily",
+  title: "Privacy Policy",
   description: "SnapMealsDaily privacy policy and data protection information.",
 };
 
