@@ -1,9 +1,15 @@
+import Link from "next/link";
+
 export const revalidate = 43200;
 
 export const metadata = {
   title: "Contact Us",
-  description: "Get in touch with SnapMealsDaily. We'd love to hear from you!",
+  description:
+    "How to reach SnapMealsDaily by email: questions and recipe corrections, partnership inquiries, and privacy requests.",
 };
+
+const sectionHeading = "text-lg font-semibold text-neutral-900 dark:text-white mb-2";
+const bodyText = "text-neutral-600 dark:text-neutral-400 leading-relaxed";
 
 export default function ContactPage() {
   return (
@@ -15,119 +21,70 @@ export default function ContactPage() {
               Get in Touch
             </h1>
             <p className="text-lg text-neutral-600 dark:text-neutral-400">
-              Have a question, recipe suggestion, or partnership inquiry? We'd love to hear from you!
+              SnapMealsDaily is a food site that publishes recipe ideas and meal roundups for home
+              cooks. The best way to reach us is by email, and the right address depends on what
+              you want to tell us.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12">
-            {/* Contact Form */}
+          <div className="space-y-8">
             <div>
-              <form className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="Your name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="w-full px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="your@email.com"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="How can we help?"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    rows={5}
-                    className="w-full px-4 py-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="Your message..."
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-primary hover:bg-accent-foreground text-primary-foreground font-medium py-2 rounded-lg transition-colors"
+              <h2 className={sectionHeading}>Questions, corrections, and feedback</h2>
+              <p className={bodyText}>
+                If you have a question about a recipe, spotted a mistake or an unclear step, or
+                want to share a suggestion, write to{" "}
+                <a href="mailto:hello@snapmealsdaily.com" className="text-primary hover:underline">
+                  hello@snapmealsdaily.com
+                </a>
+                . It helps to include the title or link of the post you are writing about, so we
+                can find it quickly.
+              </p>
+            </div>
+
+            <div>
+              <h2 className={sectionHeading}>Sponsorships and partnerships</h2>
+              <p className={bodyText}>
+                For sponsorships, collaborations, or other business inquiries, email{" "}
+                <a
+                  href="mailto:partnerships@snapmealsdaily.com"
+                  className="text-primary hover:underline"
                 >
-                  Send Message
-                </button>
-              </form>
+                  partnerships@snapmealsdaily.com
+                </a>
+                . Please tell us briefly who you are and what you have in mind. As described on
+                our <Link href="/about" className="text-primary hover:underline">about page</Link>,
+                we do not run paid placements disguised as editorial content.
+              </p>
             </div>
 
-            {/* Contact Info */}
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2">
-                  Follow Us
-                </h3>
-                <p className="text-neutral-600 dark:text-neutral-400 mb-4">
-                  Connect with us on social media for daily food inspiration:
-                </p>
-                <div className="flex gap-4">
-                  <a
-                    href="#"
-                    className="text-primary hover:underline font-medium"
-                  >
-                    Pinterest
-                  </a>
-                  <a
-                    href="#"
-                    className="text-primary hover:underline font-medium"
-                  >
-                    Instagram
-                  </a>
-                  <a
-                    href="#"
-                    className="text-primary hover:underline font-medium"
-                  >
-                    Facebook
-                  </a>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2">
-                  Email
-                </h3>
-                <p className="text-neutral-600 dark:text-neutral-400">
-                  <a href="mailto:hello@snapmealsdaily.com" className="text-primary hover:underline">
-                    hello@snapmealsdaily.com
-                  </a>
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2">
-                  Business Inquiries
-                </h3>
-                <p className="text-neutral-600 dark:text-neutral-400">
-                  For sponsorships, partnerships, or collaborations, please email:
-                </p>
-                <p className="text-neutral-600 dark:text-neutral-400 mt-2">
-                  <a href="mailto:partnerships@snapmealsdaily.com" className="text-primary hover:underline">
-                    partnerships@snapmealsdaily.com
-                  </a>
-                </p>
-              </div>
+            <div>
+              <h2 className={sectionHeading}>Privacy and data requests</h2>
+              <p className={bodyText}>
+                To ask about your data or request its deletion, see our{" "}
+                <Link href="/privacy" className="text-primary hover:underline">
+                  privacy policy
+                </Link>{" "}
+                and write to{" "}
+                <a href="mailto:privacy@snapmealsdaily.com" className="text-primary hover:underline">
+                  privacy@snapmealsdaily.com
+                </a>
+                .
+              </p>
             </div>
+
+            <div>
+              <h2 className={sectionHeading}>Before you write</h2>
+              <p className={bodyText}>
+                Our posts are general recipe ideas, not medical or nutrition advice, so we cannot
+                give personal dietary guidance. Please read the{" "}
+                <Link href="/disclaimer" className="text-primary hover:underline">
+                  disclaimer
+                </Link>{" "}
+                for details, and check ingredients against your own allergies and dietary needs.
+              </p>
+            </div>
+
+            {/* TODO(owner): add real Pinterest, Instagram and Facebook profile URLs here once confirmed. The previous placeholder links (href="#") were removed because they led nowhere. */}
           </div>
         </div>
       </div>
